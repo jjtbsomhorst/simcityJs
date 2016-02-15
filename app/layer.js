@@ -16,20 +16,20 @@ class Layer{
 		container.appendChild(this.node);
 		var self = this;
 		this.node.addEventListener("onload",this.setIsinitialized(),this);
-		
-			this.data = [];
-			this.cols = c;
-			this.rows = r;
-			this.width = w;
-			this.height = h;
+		this.isDirty = true;
+		this.data = [];
+		this.cols = c;
+		this.rows = r;
+		this.width = w;
+		this.height = h;
 
-			for(var i = 0; i < this.rows;i++){
-				var row = [];
-				for(var j = 0; j< this.cols;j++){
-					row.push(ZoneLoader.getZoneObject(zone));
-				}
-				this.data.push(row);
+		for(var i = 0; i < this.rows;i++){
+			var row = [];
+			for(var j = 0; j< this.cols;j++){
+				row.push(ZoneLoader.getZoneObject(zone));
 			}
+			this.data.push(row);
+		}
 	}
 
 	setForeGround(){
@@ -67,30 +67,37 @@ class Layer{
 			col--
 		}
 
-		
-
-		this.data[col][row] = zone;
+		var currentZone = this.data[col][row];
+		debugger;
+		if(currentZone.toString() != zone.toString()){
+			this.data[col][row] = zone;
+			this.isDirty = true;
+		}
 	}
 
 	draw(){
-		if(this.context == null && this.node != null){
-			this.context = this.node.getContext("2d");
+		if(this.isDirty){
+			console.log('redraw, because we are dirty');
+			if(this.context == null && this.node != null){
+				this.context = this.node.getContext("2d");
 
-		}
+			}
 
-		for(var i = 0; i < this.cols;i++){
+			for(var i = 0; i < this.cols;i++){
 
-			var y = i * 16;
+				var y = i * 16;
 
-			try{
-					for(var j = 0; j < this.data[i].length;j	++){
-					var x = j * 16;
-					var z = this.data[i][j];
-					if(z!=null){
-						this.context.drawImage(z.getSprite(),x,y);
+				try{
+						for(var j = 0; j < this.data[i].length;j	++){
+						var x = j * 16;
+						var z = this.data[i][j];
+						if(z!=null){
+							this.context.drawImage(z.getSprite(),x,y);
+						}
 					}
-				}
-			}catch(e){}
+				}catch(e){}
+			}
+			this.isDirty = false;
 		}
 	}
 }

@@ -18,6 +18,10 @@ class Zone{
 		return this.sprite;
 	}
 
+	toString(){
+		return this.sprite.src;
+	}
+
 };
 class residential extends Zone{
 	constructor(){
