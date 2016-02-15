@@ -68,7 +68,7 @@ class Layer{
 		}
 
 		var currentZone = this.data[col][row];
-		debugger;
+		
 		if(currentZone.toString() != zone.toString()){
 			this.data[col][row] = zone;
 			this.isDirty = true;
@@ -76,12 +76,12 @@ class Layer{
 	}
 
 	draw(){
-		if(this.isDirty){
+		if(typeof(this.context) == 'undefined'){
+			this.context = this.node.getContext('2d');
+		}
+		if(this.isDirty && typeof(this.context) != "undefined"){
 			console.log('redraw, because we are dirty');
-			if(this.context == null && this.node != null){
-				this.context = this.node.getContext("2d");
-
-			}
+			this.context.clearRect(0,0,this.width,this.height);	
 
 			for(var i = 0; i < this.cols;i++){
 
