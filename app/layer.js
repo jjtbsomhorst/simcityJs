@@ -88,14 +88,42 @@ class Layer{
 				var y = i * 16;
 
 				try{
+						
+						
+
 						for(var j = 0; j < this.data[i].length;j	++){
+
 						var x = j * 16;
 						var z = this.data[i][j];
 						if(z!=null){
-							this.context.drawImage(z.getSprite(),x,y);
+							if(z.getClass() == "roadZone"){
+								console.log("row "+i);
+								console.log("col "+j);
+							}
+							var surroundings = [];
+
+							if(i-1 >= 0){
+								surroundings[0] = this.data[i-1][j];
+							}
+
+							if(j >0 ){
+								surroundings[1] = this.data[i][j-1];
+							}
+							if(j < this.rows){
+								surroundings[2] = this.data[i][j+1];
+							}
+
+
+							if(i+1 < this.cols){
+								surroundings[3] = this.data[i+1][j];
+							}
+
+							z.draw(this.context,x,y,surroundings);
 						}
 					}
-				}catch(e){}
+				}catch(e){
+					this.isDirty = false;
+				}
 			}
 			this.isDirty = false;
 		}

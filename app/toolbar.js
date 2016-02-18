@@ -28,6 +28,13 @@ class Toolbar{
 		btnRes.id = "industrial";
 		btnRes.addEventListener("click",(e)=>{this.onBtnClick(e)});
 		this.node.appendChild(btnRes);
+
+		var btnRes = document.createElement('img');
+		//btnRes.src = "assets/road_normal.png";
+		btnRes.id = "road";
+		btnRes.className = "road";
+		btnRes.addEventListener("click",(e)=>{this.onBtnClick(e)});
+		this.node.appendChild(btnRes);
 	}
 
 	getCurrentButton(){

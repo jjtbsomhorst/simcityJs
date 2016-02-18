@@ -22,27 +22,74 @@ class Zone{
 		return this.sprite.src;
 	}
 
+	draw(context,x,y,surroundings){
+		context.drawImage(this.getSprite(),x,y);
+	}
+
+	getClass(){
+		return "zone";
+	}
+
 };
 class residential extends Zone{
 	constructor(){
 		super("assets/residential.png");
+	}
+	getClass(){
+		return "residentialZone";
 	}
 };
 class industrial extends Zone{
 	constructor(){
 		super("assets/industrial.png");
 	}
+	getClass(){
+		return "industrialZone";
+	}
 };
 class commercial extends Zone{
 	constructor(){
 		super("assets/commercial.png");
+	}
+	getClass(){
+		return "commercialZone";
 	}
 };
 class soil extends Zone{
 	constructor(){
 		super("assets/soil.png");
 	}
+	getClass(){
+		return "soilZone";
+	}
 };
+
+class road extends Zone{
+
+
+	constructor(){
+		super("assets/road.png");
+	}
+
+	getClass(){
+		return "roadZone";
+	}
+
+	draw(context,x,y,surroundings){
+		//d/ebugger;
+		//super.draw(context,x,y,surroundings);
+		console.log(surroundings);
+		context.drawImage(this.getSprite(),0,0,16,16,x,y,16,16);
+		if(surroundings[1].getClass() == this.getClass() || surroundings[2].getClass() == this.getClass()){
+			context.drawImage(this.getSprite(),16,0,16,16,x,y,16,16);
+		
+		}
+		else if(surroundings[0].getClass() == this.getClass() || surroundings[3].getClass() == this.getClass()){
+			context.drawImage(this.getSprite(),0,0,16,16,x,y,16,16);}
+
+	}
+
+}
 
 class ZoneLoader{
 
@@ -62,6 +109,8 @@ class ZoneLoader{
 				o= new industrial();break;
 			case "commercial":
 				o= new commercial();break;
+			case "road":
+				o = new road();break;
 			default:
 				o = new Zone(); break;
 			
