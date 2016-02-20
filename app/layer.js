@@ -45,6 +45,9 @@ class Layer{
 	}
 
 	setZone(x,y,zone){
+
+
+
 		var row = 0;
 		var col = 0;
 
@@ -79,27 +82,19 @@ class Layer{
 		if(typeof(this.context) == 'undefined'){
 			this.context = this.node.getContext('2d');
 		}
-		if(this.isDirty && typeof(this.context) != "undefined"){
-			console.log('redraw, because we are dirty');
+		if( typeof(this.context) != "undefined"){
 			this.context.clearRect(0,0,this.width,this.height);	
-
+			
 			for(var i = 0; i < this.cols;i++){
 
 				var y = i * 16;
 
 				try{
-						
-						
-
-						for(var j = 0; j < this.data[i].length;j	++){
+					for(var j = 0; j < this.data[i].length;j	++){
 
 						var x = j * 16;
 						var z = this.data[i][j];
 						if(z!=null){
-							if(z.getClass() == "roadZone"){
-								console.log("row "+i);
-								console.log("col "+j);
-							}
 							var surroundings = [];
 
 							if(i-1 >= 0){
@@ -118,14 +113,14 @@ class Layer{
 								surroundings[3] = this.data[i+1][j];
 							}
 
-							z.draw(this.context,x,y,surroundings);
+							z.draw(this.context,x,y,surroundings,i,j);
 						}
 					}
 				}catch(e){
-					this.isDirty = false;
+					//console.error(e);
 				}
 			}
-			this.isDirty = false;
+			//this.isDirty = false;
 		}
 	}
 }

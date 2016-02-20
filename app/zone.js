@@ -8,7 +8,6 @@ class Zone{
 		}
 
 		this.sprite.src = source;
-
 		this.sprite.onload= function(){
 			console.log('sprite loaded');
 		}
@@ -22,13 +21,23 @@ class Zone{
 		return this.sprite.src;
 	}
 
-	draw(context,x,y,surroundings){
+	draw(context,x,y,surroundings,c,r){
 		context.drawImage(this.getSprite(),x,y);
 	}
 
 	getClass(){
 		return "zone";
 	}
+
+	equals(z,zones){
+		for(var i = 0; i < zones.length;i++){
+			if(zones[i] != z.getClass()){
+				return false;
+			}
+		}
+		return true;
+	}
+
 
 };
 class residential extends Zone{
@@ -75,18 +84,74 @@ class road extends Zone{
 		return "roadZone";
 	}
 
-	draw(context,x,y,surroundings){
-		//d/ebugger;
-		//super.draw(context,x,y,surroundings);
-		console.log(surroundings);
-		context.drawImage(this.getSprite(),0,0,16,16,x,y,16,16);
-		if(surroundings[1].getClass() == this.getClass() || surroundings[2].getClass() == this.getClass()){
-			context.drawImage(this.getSprite(),16,0,16,16,x,y,16,16);
-		
-		}
-		else if(surroundings[0].getClass() == this.getClass() || surroundings[3].getClass() == this.getClass()){
-			context.drawImage(this.getSprite(),0,0,16,16,x,y,16,16);}
 
+
+	draw(context,x,y,surroundings,c,r){
+
+		var center = this.getClass();
+		var top = "blank";
+		var left = "blank";
+		var right = "blank";
+		var bottom = "blank";
+		var xOffset = 0;
+		var yOffset = 0;
+
+		if(surroundings[0] != null){
+			top = surroundings[0].getClass();
+		}
+
+		if(surroundings[1] != null){
+			left = surroundings[1].getClass();
+		}
+		if(surroundings[2] != null){
+			bottom = surroundings[2].getClass();
+		}
+		if(surroundings[3] != null){
+			right = surroundings[3].getClass();
+		}
+
+		if(super.equals(this,[top,left,bottom,right])){
+			xOffset = 96;
+			yOffset = 0;
+		}else if(super.equals(this,[center,left,right,top])){
+			xOffset = 112;
+			yOffset = 0;
+		}else if(super.equals(this,[bottom,center,left,right])){
+			xOffset = 80;
+			yOffset = 16;
+		}else if(super.equals(this,[bottom,center,left,top])){
+			xOffset = 64;
+			yOffset = 0;
+		}else if(super.equals(this,[top,left])){
+			xOffset = 48;
+			yOffset = 16;
+		}else if(super.equals(this,[bottom,center,right,top])){
+			xOffset = 96;
+			yOffset = 16;
+
+		}else if(super.equals(this,[bottom,center,right])){
+			xOffset = 32;
+			yOffset = 0;
+		}else
+		if(super.equals(this,[center,left,right])){
+			xOffset = 48;
+			yOffset = 0;
+		}else if(super.equals(this,[center,right]) && ! super.equals(this,[top,bottom])){
+			xOffset = 0;
+			yOffset = 0;
+		}else
+		if(super.equals(this,[right,top])){
+			xOffset= 96;
+			yOffset = 0;
+
+		}else if(super.equals(this,[bottom,center,top])){
+			xOffset = 32;
+			yOffset = 16;
+		}else if(super.equals(this,[center,left]) || super.equals(this,[bottom,center])){
+			xOffset = 16;
+			yOffset = 0;
+		}
+		context.drawImage(this.getSprite(),xOffset,yOffset,16,16,x,y,16,16);
 	}
 
 }
@@ -119,6 +184,4 @@ class ZoneLoader{
 		}
 		return this.cache.get(z);
 	}
-
-
 }

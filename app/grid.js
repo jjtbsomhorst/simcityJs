@@ -24,7 +24,6 @@ class Grid{
 		var canDraw = true;
 		for(var i =0; i < this.layers.length;i++){
 			if(!this.layers[i].isInitialized()){
-				console.log('can not draw yet..');
 				canDraw = false;
 			}
 		}
