@@ -1,5 +1,6 @@
 "use strict"
 class Zone{
+
 	constructor(source){
 		this.sprite = new Image();
 		
@@ -8,9 +9,6 @@ class Zone{
 		}
 
 		this.sprite.src = source;
-		this.sprite.onload= function(){
-			console.log('sprite loaded');
-		}
 	}
 
 	getSprite(){
@@ -22,6 +20,7 @@ class Zone{
 	}
 
 	draw(context,x,y,surroundings,c,r){
+
 		context.drawImage(this.getSprite(),x,y);
 	}
 
@@ -38,6 +37,23 @@ class Zone{
 		return true;
 	}
 
+	needsPower(){
+		return false;
+	}
+	needsWater(){
+		return false;
+	}
+
+	isPowered(){
+		return false;
+	}
+	isWatered(){
+		return false;
+	}
+	isInhabited(){
+		return false;
+	}
+
 
 };
 class residential extends Zone{
@@ -46,6 +62,14 @@ class residential extends Zone{
 	}
 	getClass(){
 		return "residentialZone";
+	}
+
+	needsPower(){
+		return true;
+	}
+
+	needsWater(){
+		return false; // need to be implemented
 	}
 };
 class industrial extends Zone{
@@ -73,6 +97,16 @@ class soil extends Zone{
 	}
 };
 
+class PowerPlant extends Zone{
+	needsPower(){
+		return false;
+	}
+	needsWater(){
+		return false;
+	}
+}
+
+
 class road extends Zone{
 
 
@@ -87,7 +121,7 @@ class road extends Zone{
 
 
 	draw(context,x,y,surroundings,c,r){
-
+		//debugger;
 		var center = this.getClass();
 		var top = "blank";
 		var left = "blank";

@@ -22,21 +22,44 @@ class Layer{
 		this.rows = r;
 		this.width = w;
 		this.height = h;
+		this.baseZone = ZoneLoader.getZoneObject(zone);
 
 		for(var i = 0; i < this.rows;i++){
 			var row = [];
 			for(var j = 0; j< this.cols;j++){
-				row.push(ZoneLoader.getZoneObject(zone));
+				row.push(this.baseZone);
 			}
 			this.data.push(row);
 		}
 	}
 
-	setForeGround(){
-		this.node.style.zIndex = 1000;
+	static getSurroundingZones(data,i,j){
+		var surroundings = [null,null,null,null];
+
+		try{
+			surroundings[0] = data[i-1][j];
+		}catch(e){}
+
+		try{
+			surroundings[3] = data[i+1][j];
+		}catch(e){}
+
+		try{
+			surroundings[1] = data[i][j-1];
+		}catch(e){}
+		
+		try{
+			surroundings[2] = data[i][j+1];
+		}catch(e){}
+		
+		return surroundings;
 	}
+
+	setIndex(index){
+		this.node.style.zIndex = index;
+	}
+
 	setIsinitialized(){
-		console.log('init');
 		this.initialized = true;
 	}
 
@@ -44,10 +67,12 @@ class Layer{
 		return this.initialized;
 	}
 
-	setZone(x,y,zone){
+	getZone(x,y){
+		var coords = this.getCoordinates(x,y);
+		return this.data[coords[1]][coords[0]];
+	}
 
-
-
+	getCoordinates(x,y){
 		var row = 0;
 		var col = 0;
 
@@ -69,58 +94,153 @@ class Layer{
 			col = y / 16;
 			col--
 		}
+		return [row,col];
+	}
 
-		var currentZone = this.data[col][row];
-		
-		if(currentZone.toString() != zone.toString()){
-			this.data[col][row] = zone;
-			this.isDirty = true;
+
+	setZone(x,y,zone){
+
+	}
+
+		clear(){
+		if( typeof(this.context) != "undefined"){
+			this.context.clearRect(0,0,this.width,this.height);
 		}
 	}
 
-	draw(){
+	draw(r,c){
 		if(typeof(this.context) == 'undefined'){
 			this.context = this.node.getContext('2d');
 		}
-		if( typeof(this.context) != "undefined"){
-			this.context.clearRect(0,0,this.width,this.height);	
-			
-			for(var i = 0; i < this.cols;i++){
+		
+	}
 
-				var y = i * 16;
+	toString(){
+		return 'baseLayer';
+	}
+}
 
-				try{
-					for(var j = 0; j < this.data[i].length;j	++){
+class tileLayer extends Layer{
 
-						var x = j * 16;
-						var z = this.data[i][j];
-						if(z!=null){
-							var surroundings = [];
+	constructor(c,r,w,h,zone,container){
+		super(c,r,w,h,zone,container);
+		this.node.setAttribute("id","tileLayer");
+	}
+	toString(){
+		return 'tileLayer';
+	}
 
-							if(i-1 >= 0){
-								surroundings[0] = this.data[i-1][j];
-							}
-
-							if(j >0 ){
-								surroundings[1] = this.data[i][j-1];
-							}
-							if(j < this.rows){
-								surroundings[2] = this.data[i][j+1];
-							}
-
-
-							if(i+1 < this.cols){
-								surroundings[3] = this.data[i+1][j];
-							}
-
-							z.draw(this.context,x,y,surroundings,i,j);
-						}
-					}
-				}catch(e){
-					//console.error(e);
-				}
-			}
-			//this.isDirty = false;
+	setZone(x,y,zone){
+		var coordinates = this.getCoordinates(x,y);
+		var currentZone = this.data[coordinates[1]][coordinates[0]];		
+		if(currentZone.toString() != zone.toString()){
+			this.data[coordinates[1]][coordinates[0]] = zone;
+			this.isDirty = true;
 		}
+	}
+	draw(r,c){
+		super.draw();
+		if( typeof(this.context) != "undefined"){
+			
+			var x = r*16;
+			var y = c*16;
+			var surroundings = Layer.getSurroundingZones(this.data,r,c);
+			
+			try{
+				var z = this.data[r][c];
+				z.draw(this.context,y,x,surroundings,c,r);
+			}catch(e){
+			}
+		}
+	}
+
+}
+
+class staticTileLayer extends tileLayer{
+	constructor(c,r,w,h,zone,container){
+		super(c,r,w,h,zone,container);
+		this.dirty = true;
+	}
+	setZone(x,y,zone){} // do nothing
+
+	clear(){
+		if(this.dirty){
+			super.clear();
+		}
+	}
+	draw(r,c){
+		if(this.dirty){
+			super.draw(r,c);		
+			if(r+1 >= this.rows && c+1 >= this.cols){
+			this.dirty = false;
+			}
+		}
+
+	}
+}
+
+class effectsLayer extends tileLayer{
+
+
+	constructor(c,r,w,h,zone,container){
+		super(c,r,w,h,zone,container);
+		this.node.setAttribute("id","effectsLayer");
+		this.cache = new Map();
+		this.loadTiles();
+		
+	}
+
+	draw(r,c){
+		super.draw(r,c);
+		try{
+			var z = this.data[r][c];
+			var tile = null;
+			if(z.needsPower()){
+				tile = this.cache.get("Electra");
+			}
+			else if(z.needsWater()){
+				tile = this.cache.get("Water");	
+			}
+			if(tile != null){
+				tile.draw(this.context, r*16,c*16);
+			}
+		}catch(e){
+			console.log(e);
+		}
+	}
+
+	toString(){
+		return 'effectsLayer';
+	}
+
+	loadTiles(){
+		this.cache.set("Electra",new Tile("Electra","assets/effects.png",16,16,16,0));
+		this.cache.set("Water", new Tile( "Water"  ,"assets/effects.png",16,16,0,0));
+	}
+
+
+	getTile(type){
+		return cache.get(type);
+	}
+}
+
+class Tile{
+	constructor(name,imgSrc,w,h,offsetX, offsetY){
+		this.image = new Image();
+		this.image.src = imgSrc;
+		this.name = name;
+		this.width = w;
+		this.height = h;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+	}
+
+	getSprite(){
+		return this.image;
+	}
+
+	draw(context,y,x){
+
+		context.drawImage(this.getSprite(),this.offsetX,this.offsetY,this.width,this.height,x,y,this.width,this.height);
 	}
 }
