@@ -1,14 +1,36 @@
 "use strict"
 class Zone{
 
-	constructor(source){
+	constructor(source,x,y){
 		this.sprite = new Image();
 		
 		if(source == null){
 			source = "assets/blank.png";
 		}
-
+		this.x = x;
+		this.y = y;
+		this.powered= false;
+		this.watered=false;
 		this.sprite.src = source;
+	}
+
+	needsPower(){
+		return false;
+	}
+	needsWater(){
+		return false;
+	}
+
+
+	setPowered(p){
+		//this.powered = p;
+	}
+
+	isPowered(){
+		return this.powered;
+	}
+	isWatered(){
+		return this.watered;
 	}
 
 	getSprite(){
@@ -20,7 +42,6 @@ class Zone{
 	}
 
 	draw(context,x,y,surroundings,c,r){
-
 		context.drawImage(this.getSprite(),x,y);
 	}
 
@@ -37,28 +58,26 @@ class Zone{
 		return true;
 	}
 
-	needsPower(){
-		return false;
-	}
-	needsWater(){
-		return false;
-	}
-
-	isPowered(){
-		return false;
-	}
-	isWatered(){
-		return false;
-	}
+	
 	isInhabited(){
 		return false;
 	}
 
 
 };
-class residential extends Zone{
-	constructor(){
-		super("assets/residential.png");
+
+class DemandingZone extends Zone{
+	constructor(source,x,y){
+		super(source,x,y);
+	}
+	setPowered(p){
+		this.powered = p;
+	}
+}
+
+class residential extends DemandingZone{
+	constructor(x,y){
+		super("assets/residential.png",x,y);
 	}
 	getClass(){
 		return "residentialZone";
@@ -72,25 +91,25 @@ class residential extends Zone{
 		return false; // need to be implemented
 	}
 };
-class industrial extends Zone{
-	constructor(){
-		super("assets/industrial.png");
+class industrial extends DemandingZone{
+	constructor(x,y){
+		super("assets/industrial.png",x,y);
 	}
 	getClass(){
 		return "industrialZone";
 	}
 };
-class commercial extends Zone{
-	constructor(){
-		super("assets/commercial.png");
+class commercial extends DemandingZone{
+	constructor(x,y){
+		super("assets/commercial.png",x,y);
 	}
 	getClass(){
 		return "commercialZone";
 	}
 };
 class soil extends Zone{
-	constructor(){
-		super("assets/soil.png");
+	constructor(x,y){
+		super("assets/soil.png",x,y);
 	}
 	getClass(){
 		return "soilZone";
@@ -98,11 +117,15 @@ class soil extends Zone{
 };
 
 class PowerPlant extends Zone{
+	constructor(x,y){
+		super("assets/powerplant.png",x,y)
+		this.powered=true;
+	}
 	needsPower(){
 		return false;
 	}
 	needsWater(){
-		return false;
+		return this.watered;
 	}
 }
 
@@ -110,15 +133,17 @@ class PowerPlant extends Zone{
 class road extends Zone{
 
 
-	constructor(){
-		super("assets/road.png");
+	constructor(x,y){
+		super("assets/road.png",x,y);
 	}
 
 	getClass(){
 		return "roadZone";
 	}
 
-
+	needsPower(){
+		return false;
+	}
 
 	draw(context,x,y,surroundings,c,r){
 		//debugger;
@@ -192,30 +217,26 @@ class road extends Zone{
 
 class ZoneLoader{
 
-	static getZoneObject(z){
-		if(this.cache == null){
-			this.cache = new Map();
+	static getZoneObject(z,x,y){
+		console.log(z);
+		var o = null;
+		switch(z){
+		case "soil":
+			o=  new soil(x,y);break;
+		case "residential":
+			o= new residential(x,y);break;
+		case "industrial":
+			o= new industrial(x,y);break;
+		case "commercial":
+			o= new commercial(x,y);break;
+		case "road":
+			o = new road(x,y);break;
+		case "powerplant":
+			o = new PowerPlant(x,y);break;
+		default:
+			o = new Zone(null,x,y); break;
+		
 		}
-
-		if(this.cache.get(z)== null){
-			var o = null;
-			switch(z){
-			case "soil":
-				o=  new soil();break;
-			case "residential":
-				o= new residential();break;
-			case "industrial":
-				o= new industrial();break;
-			case "commercial":
-				o= new commercial();break;
-			case "road":
-				o = new road();break;
-			default:
-				o = new Zone(); break;
-			
-			}
-			this.cache.set(z,o);
-		}
-		return this.cache.get(z);
+		return o;
 	}
 }

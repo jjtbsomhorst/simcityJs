@@ -1,29 +1,15 @@
 "use strict"
-class Layer{
- 
+class GameLayer{
 	constructor(c,r,w,h,zone,container){
-		this.index = container.childNodes.length+1;
-		this.node = document.createElement("canvas");
-		this.node.setAttribute("id","layer_"+this.index);
-		this.node.setAttribute("height",h);
-		this.node.setAttribute("width",w);
-		
-		this.node.style.position = 'absolute';
-		this.node.style.Zindex = this.index;
-		this.initialized = false;
-		this.offsetX = container.getBoundingClientRect().left;
-		this.offsetY = container.getBoundingClientRect().top;
-		container.appendChild(this.node);
-		var self = this;
-		this.node.addEventListener("onload",this.setIsinitialized(),this);
-		this.isDirty = true;
 		this.data = [];
 		this.cols = c;
 		this.rows = r;
 		this.width = w;
 		this.height = h;
 		this.baseZone = ZoneLoader.getZoneObject(zone);
-
+		this.offsetX = container.getBoundingClientRect().left;
+		this.offsetY = container.getBoundingClientRect().top;
+		this.initialized = true;
 		for(var i = 0; i < this.rows;i++){
 			var row = [];
 			for(var j = 0; j< this.cols;j++){
@@ -31,6 +17,14 @@ class Layer{
 			}
 			this.data.push(row);
 		}
+	}
+
+	setIsinitialized(){
+		this.initialized = true;
+	}
+
+	isInitialized(){
+		return this.initialized;
 	}
 
 	static getSurroundingZones(data,i,j){
@@ -55,21 +49,35 @@ class Layer{
 		return surroundings;
 	}
 
-	setIndex(index){
-		this.node.style.zIndex = index;
-	}
+	setZone(x,y,zone){
+		var coordinates = this.getCoordinates(x,y);
+		zone.x = coordinates[0];
+		zone.y = coordinates[1];
+		var currentZone = this.data[coordinates[1]][coordinates[0]];		
+		if(currentZone.toString() != zone.toString()){
+			this.data[coordinates[1]][coordinates[0]] = zone;
+			if(currentZone instanceof PowerPlant && !(zone instanceof PowerPlant)){
 
-	setIsinitialized(){
-		this.initialized = true;
-	}
+				this.disablePower(GameLayer.getSurroundingZones(this.data,currentZone.x,currentZone.y));
+			}
+		}
+	}	
 
-	isInitialized(){
-		return this.initialized;
-	}
-
-	getZone(x,y){
-		var coords = this.getCoordinates(x,y);
-		return this.data[coords[1]][coords[0]];
+	disablePower(zones){
+		if(zones != null){
+			for(var i = 0; i < zones.length;i++){
+				if(zones[i] != null){
+					if(zones[i] instanceof DemandingZone){
+						if(zones[i].isPowered()){
+							zones[i].setPowered(false);
+							this.disablePower(GameLayer.getSurroundingZones(this.data,zones[i].x,zones[i].y));
+						}
+						
+					}					
+				}
+				
+			}
+		}
 	}
 
 	getCoordinates(x,y){
@@ -95,14 +103,72 @@ class Layer{
 			col--
 		}
 		return [row,col];
+	}	
+
+	draw(r,c){
+		var surroundings = GameLayer.getSurroundingZones(this.data,r,c);
+		var zone = this.data[r][c];
+
+		if(zone instanceof PowerPlant){
+			//this.enablePower()
+		}
+
+		if(this.containsPoweredZones(surroundings)){
+			zone.setPowered(true);
+		}
+
 	}
 
+	containsPoweredZones(data){
+		var foundPower = false;
+
+		for(var i = 0; i < data.length;i++){
+			if(data[i] != null && data[i].isPowered()){
+				foundPower = true;
+				break;
+			}
+		}
+		return foundPower;
+
+	}
+	clear(){}
+}
+
+class Layer extends GameLayer{
+ 
+	constructor(c,r,w,h,zone,container){
+		super(c,r,w,h,zone,container);
+		this.index = container.childNodes.length+1;
+		this.node = document.createElement("canvas");
+		this.node.setAttribute("id","layer_"+this.index);
+		this.node.setAttribute("height",h);
+		this.node.setAttribute("width",w);
+		
+		this.node.style.position = 'absolute';
+		this.node.style.Zindex = this.index;
+		this.initialized = false;
+		container.appendChild(this.node);
+		var self = this;
+		this.node.addEventListener("onload",this.setIsinitialized(),this);
+		this.isDirty = true;
+	}
+
+	setIndex(index){
+		this.node.style.zIndex = index;
+	}
+
+
+
+	getZone(x,y){
+		var coords = this.getCoordinates(x,y);
+		return this.data[coords[1]][coords[0]];
+	}
 
 	setZone(x,y,zone){
 
 	}
 
-		clear(){
+	clear(){
 		if( typeof(this.context) != "undefined"){
 			this.context.clearRect(0,0,this.width,this.height);
 		}
@@ -195,7 +261,7 @@ class effectsLayer extends tileLayer{
 		try{
 			var z = this.data[r][c];
 			var tile = null;
-			if(z.needsPower()){
+			if(z.needsPower() && !z.isPowered()){
 				tile = this.cache.get("Electra");
 			}
 			else if(z.needsWater()){

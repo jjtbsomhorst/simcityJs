@@ -6,6 +6,9 @@ class Grid{
 		this.columns = c;
 		this.rows = r;
 
+
+		this.gameLayer = new GameLayer(r,c,w,h,"",container);
+
 		this.effectsLayer = new effectsLayer(r,c,w,h,"",container);
 		this.zoneLayer = new tileLayer(r,c,w,h,"",container);
 		this.soilLayer= new staticTileLayer(r,c,w,h,"soil",container);
@@ -15,6 +18,7 @@ class Grid{
 		this.soilLayer.setIndex(0);
 
 		this.layers = [];
+		this.layers.push(this.gameLayer);
 		this.layers.push(this.zoneLayer);
 		this.layers.push(this.effectsLayer);
 		this.layers.push(this.soilLayer);
@@ -23,6 +27,7 @@ class Grid{
 		container.addEventListener("click",(e)=>{this.onCanvasClick(e)});
 	}
 
+	
 	draw(){
 
 		if(this.canDraw()){
@@ -57,8 +62,9 @@ class Grid{
 
 	onCanvasClick(event){
 		if(this.currentTool != null){
-			
+				
 			event.preventDefault();
+			this.gameLayer.setZone(event.x,event.y,this.currentTool);
 			for(var i=0;i<this.layers.length;i++){
 				this.layers[i].setZone(event.x,event.y,this.currentTool);
 			}
