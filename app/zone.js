@@ -1,36 +1,47 @@
 "use strict"
+
+class Sprite{
+	constructor(img,width, height, offsetX, offsetY){
+		this.img =img;
+		this.w = width;
+		this.h = height;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+	}
+
+	getSprite(){
+		return this.img;
+	}
+
+	get width(){
+		return this.w;
+	}
+	get height(){
+		return this.h;
+	}
+}
+
+class Tile extends Sprite{
+	constructor(src,width,height,offsetX,offsetY){
+		var img = new Image();
+		img.src = src;
+		super(img,width,height,offsetX,offsetY);
+	}
+}
+
+
+
 class Zone{
 
 	constructor(source,x,y){
-		this.sprite = new Image();
+		var img = new Image();
 		
+
 		if(source == null){
 			source = "assets/blank.png";
 		}
-		this.x = x;
-		this.y = y;
-		this.powered= false;
-		this.watered=false;
-		this.sprite.src = source;
-	}
-
-	needsPower(){
-		return false;
-	}
-	needsWater(){
-		return false;
-	}
-
-
-	setPowered(p){
-		//this.powered = p;
-	}
-
-	isPowered(){
-		return this.powered;
-	}
-	isWatered(){
-		return this.watered;
+		img.src = source;
+		this.sprite = new Sprite(img,16,16,0,0);		
 	}
 
 	getSprite(){
@@ -49,15 +60,9 @@ class Zone{
 		return "zone";
 	}
 
-	equals(z,zones){
-		for(var i = 0; i < zones.length;i++){
-			if(zones[i] != z.getClass()){
-				return false;
-			}
-		}
-		return true;
+	equals(z){
+		return (z.getClass() == this.getClass());
 	}
-
 	
 	isInhabited(){
 		return false;
@@ -67,12 +72,32 @@ class Zone{
 };
 
 class DemandingZone extends Zone{
+
 	constructor(source,x,y){
 		super(source,x,y);
+		this.powered= false;
+		this.watered= false;
 	}
 	setPowered(p){
 		this.powered = p;
 	}
+
+
+	needsPower(){
+		return true;
+	}
+
+	needsWater(){
+		return false;
+	}
+
+	isPowered(){
+		return this.powered;
+	}
+	isWatered(){
+		return this.watered;
+	}
+
 }
 
 class residential extends DemandingZone{
@@ -83,13 +108,7 @@ class residential extends DemandingZone{
 		return "residentialZone";
 	}
 
-	needsPower(){
-		return true;
-	}
 
-	needsWater(){
-		return false; // need to be implemented
-	}
 };
 class industrial extends DemandingZone{
 	constructor(x,y){
@@ -130,7 +149,7 @@ class PowerPlant extends Zone{
 }
 
 
-class road extends Zone{
+class road extends DemandingZone{
 
 
 	constructor(x,y){
@@ -145,8 +164,11 @@ class road extends Zone{
 		return false;
 	}
 
-	draw(context,x,y,surroundings,c,r){
-		//debugger;
+	needsWater(){
+		return faĺse;
+	}
+
+	getSprite(surroundings){
 		var center = this.getClass();
 		var top = "blank";
 		var left = "blank";
@@ -169,57 +191,70 @@ class road extends Zone{
 			right = surroundings[3].getClass();
 		}
 
-		if(super.equals(this,[top,left,bottom,right])){
+		if(ZoneLoader.equalsAll(this,[top,left,bottom,right])){
 			xOffset = 96;
 			yOffset = 0;
-		}else if(super.equals(this,[center,left,right,top])){
+		}else if(ZoneLoader.equalsAll(this,[center,left,right,top])){
 			xOffset = 112;
 			yOffset = 0;
-		}else if(super.equals(this,[bottom,center,left,right])){
+		}else if(ZoneLoader.equalsAll(this,[bottom,center,left,right])){
 			xOffset = 80;
 			yOffset = 16;
-		}else if(super.equals(this,[bottom,center,left,top])){
+		}else if(ZoneLoader.equalsAll(this,[bottom,center,left,top])){
 			xOffset = 64;
 			yOffset = 0;
-		}else if(super.equals(this,[top,left])){
+		}else if(ZoneLoader.equalsAll(this,[top,left])){
 			xOffset = 48;
 			yOffset = 16;
-		}else if(super.equals(this,[bottom,center,right,top])){
+		}else if(ZoneLoader.equalsAll(this,[bottom,center,right,top])){
 			xOffset = 96;
 			yOffset = 16;
 
-		}else if(super.equals(this,[bottom,center,right])){
+		}else if(ZoneLoader.equalsAll(this,[bottom,center,right])){
 			xOffset = 32;
 			yOffset = 0;
 		}else
-		if(super.equals(this,[center,left,right])){
+		if(ZoneLoader.equalsAll(this,[center,left,right])){
 			xOffset = 48;
 			yOffset = 0;
-		}else if(super.equals(this,[center,right]) && ! super.equals(this,[top,bottom])){
+		}else if(ZoneLoader.equalsAll(this,[center,right]) && ! ZoneLoader.equalsAll(this,[top,bottom])){
 			xOffset = 0;
 			yOffset = 0;
 		}else
-		if(super.equals(this,[right,top])){
+		if(ZoneLoader.equalsAll(this,[right,top])){
 			xOffset= 96;
 			yOffset = 0;
 
-		}else if(super.equals(this,[bottom,center,top])){
+		}else if(ZoneLoader.equalsAll(this,[bottom,center,top])){
 			xOffset = 32;
 			yOffset = 16;
-		}else if(super.equals(this,[center,left]) || super.equals(this,[bottom,center])){
+		}else if(ZoneLoader.equalsAll(this,[center,left]) || ZoneLoader.equalsAll(this,[bottom,center])){
 			xOffset = 16;
 			yOffset = 0;
 		}
-		context.drawImage(this.getSprite(),xOffset,yOffset,16,16,x,y,16,16);
+		
+		this.sprite.offsetX = xOffset;
+		this.sprite.offsetY = yOffset;
+		return this.sprite;
 	}
-
 }
 
 class ZoneLoader{
 
-	static getZoneObject(z,x,y){
-		console.log(z);
+	static equalsAll(source,comparTo){
+		for(var i = 0; i < comparTo.length;i++){
+			if(comparTo[i] != source.getClass()){
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	static getZoneObject(z){
 		var o = null;
+		var x=0;
+		var y=0;
 		switch(z){
 		case "soil":
 			o=  new soil(x,y);break;

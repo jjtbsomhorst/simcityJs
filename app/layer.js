@@ -1,312 +1,212 @@
 "use strict"
-class GameLayer{
-	constructor(c,r,w,h,zone,container){
-		this.data = [];
-		this.cols = c;
-		this.rows = r;
-		this.width = w;
-		this.height = h;
-		this.baseZone = ZoneLoader.getZoneObject(zone);
-		this.offsetX = container.getBoundingClientRect().left;
-		this.offsetY = container.getBoundingClientRect().top;
-		this.initialized = true;
-		for(var i = 0; i < this.rows;i++){
-			var row = [];
-			for(var j = 0; j< this.cols;j++){
-				row.push(this.baseZone);
-			}
-			this.data.push(row);
-		}
-	}
 
-	setIsinitialized(){
-		this.initialized = true;
-	}
+class Layer{
 
-	isInitialized(){
-		return this.initialized;
-	}
-
-	static getSurroundingZones(data,i,j){
-		var surroundings = [null,null,null,null];
-
-		try{
-			surroundings[0] = data[i-1][j];
-		}catch(e){}
-
-		try{
-			surroundings[3] = data[i+1][j];
-		}catch(e){}
-
-		try{
-			surroundings[1] = data[i][j-1];
-		}catch(e){}
-		
-		try{
-			surroundings[2] = data[i][j+1];
-		}catch(e){}
-		
-		return surroundings;
-	}
-
-	setZone(x,y,zone){
-		var coordinates = this.getCoordinates(x,y);
-		zone.x = coordinates[0];
-		zone.y = coordinates[1];
-		var currentZone = this.data[coordinates[1]][coordinates[0]];		
-		if(currentZone.toString() != zone.toString()){
-			this.data[coordinates[1]][coordinates[0]] = zone;
-			if(currentZone instanceof PowerPlant && !(zone instanceof PowerPlant)){
-
-				this.disablePower(GameLayer.getSurroundingZones(this.data,currentZone.x,currentZone.y));
-			}
-		}
-	}	
-
-	disablePower(zones){
-		if(zones != null){
-			for(var i = 0; i < zones.length;i++){
-				if(zones[i] != null){
-					if(zones[i] instanceof DemandingZone){
-						if(zones[i].isPowered()){
-							zones[i].setPowered(false);
-							this.disablePower(GameLayer.getSurroundingZones(this.data,zones[i].x,zones[i].y));
-						}
-						
-					}					
-				}
-				
-			}
-		}
-	}
-
-	getCoordinates(x,y){
-		var row = 0;
-		var col = 0;
-
-		x = x - this.offsetX;
-		y = y - this.offsetY;
-
-		if(x < 16){
-			row = 0;
-		}else{
-			x = x - (x%16);
-			row = x/16
-			
-		}
-
-		if( y < 16 ){
-			col = 0;
-		}else{
-			y = y - (y%16);
-			col = y / 16;
-			col--
-		}
-		return [row,col];
-	}	
-
-	draw(r,c){
-		var surroundings = GameLayer.getSurroundingZones(this.data,r,c);
-		var zone = this.data[r][c];
-
-		if(zone instanceof PowerPlant){
-			//this.enablePower()
-		}
-
-		if(this.containsPoweredZones(surroundings)){
-			zone.setPowered(true);
-		}
-
-	}
-
-	containsPoweredZones(data){
-		var foundPower = false;
-
-		for(var i = 0; i < data.length;i++){
-			if(data[i] != null && data[i].isPowered()){
-				foundPower = true;
-				break;
-			}
-		}
-		return foundPower;
-
-	}
-	clear(){}
-}
-
-class Layer extends GameLayer{
- 
-	constructor(c,r,w,h,zone,container){
-		super(c,r,w,h,zone,container);
-		this.index = container.childNodes.length+1;
+	constructor(grid){
+		this.grid = grid;
+		this.rowCount = grid.rows;
+		this.columnCount = grid.columns;
 		this.node = document.createElement("canvas");
-		this.node.setAttribute("id","layer_"+this.index);
-		this.node.setAttribute("height",h);
-		this.node.setAttribute("width",w);
-		
+		this.grid = grid;
+		var index = grid.container.childNodes.length+1;
+
+		this.node.setAttribute("id","layer_"+index+"_"+this.class);
+		this.node.setAttribute("height",grid.height);
+		this.node.setAttribute("width",grid.width);
 		this.node.style.position = 'absolute';
-		this.node.style.Zindex = this.index;
-		this.initialized = false;
-		container.appendChild(this.node);
-		var self = this;
-		this.node.addEventListener("onload",this.setIsinitialized(),this);
+		this.node.style.zIndex = index;
+		this.grid.container.appendChild(this.node);
 		this.isDirty = true;
 	}
 
-	setIndex(index){
-		this.node.style.zIndex = index;
+	setDirty(){
+		this.isDirty = true;
 	}
 
-
-
-	getZone(x,y){
-		var coords = this.getCoordinates(x,y);
-		return this.data[coords[1]][coords[0]];
+	setIsinitialized(){
+		console.log('Layer initialized');
+		this.initialized = true;
+		this.ctx = this.node.getContext('2d');
 	}
 
-	setZone(x,y,zone){
-
-	}
-
-	clear(){
-		if( typeof(this.context) != "undefined"){
-			this.context.clearRect(0,0,this.width,this.height);
+	redraw(){
+		if(this.isDirty){
+			this.context.clearRect(0,0,this.grid.width,this.grid.height);
 		}
 	}
+	setZone(coordinates,zone){
+	}
 
-	draw(r,c){
-		if(typeof(this.context) == 'undefined'){
-			this.context = this.node.getContext('2d');
+	get context(){
+		if(this.ctx == null){
+			this.ctx = this.node.getContext('2d');
 		}
+		return this.ctx;
+	}
+
+	get class(){
+		return "Layer";
+	}
+
+	static drawZone(grid,sprite,context,x,y){
+		var coordinates = Layer.getCoordinates(grid,x,y);
+		var offsetX = sprite.offsetX;
+		var offsetY = sprite.offsetY;
+		var height = grid.tileHeight;
+		var width = grid.tileWidth;
+		var sprite = sprite;
+		
+
+		context.drawImage(sprite.getSprite(),offsetX,offsetY,height,width,coordinates[0],coordinates[1],height,width);
+	}
+
+	static getCoordinates(grid,x,y){
+		var row = x*grid.tileWidth;
+		var col = y*grid.tileHeight;
+		return [row,col];
+	}
+
+
+}
+
+class TileLayer extends Layer{
+
+	constructor(grid){
+		super(grid);
+		this.dirtyZones = [];
+	}
+
+	setZone(coords,zone){
+
+		for(var i = 0;i < this.dirtyZones.length;i++){
+			var currentZone = this.dirtyZones[i];
+			var currentZoneX = currentZone.x;
+			var currentZoneY = currentZone.y;
+			var currentZoneClass = currentZone.z.getClass();
+			if(currentZone.x == coords[0] && currentZone.y == coords[1]){
+				this.isDirty = true;
+				this.dirtyZones[i].z = zone;
+				return;
+			}
+		}
+
+		this.dirtyZones.push({
+				z: zone,
+				x :coords[0],
+				y :coords[1]
+			});
+		this.isDirty = true;
+
 		
 	}
 
-	toString(){
-		return 'baseLayer';
-	}
-}
-
-class tileLayer extends Layer{
-
-	constructor(c,r,w,h,zone,container){
-		super(c,r,w,h,zone,container);
-		this.node.setAttribute("id","tileLayer");
-	}
-	toString(){
-		return 'tileLayer';
-	}
-
-	setZone(x,y,zone){
-		var coordinates = this.getCoordinates(x,y);
-		var currentZone = this.data[coordinates[1]][coordinates[0]];		
-		if(currentZone.toString() != zone.toString()){
-			this.data[coordinates[1]][coordinates[0]] = zone;
-			this.isDirty = true;
-		}
-	}
-	draw(r,c){
-		super.draw();
-		if( typeof(this.context) != "undefined"){
-			
-			var x = r*16;
-			var y = c*16;
-			var surroundings = Layer.getSurroundingZones(this.data,r,c);
-			
-			try{
-				var z = this.data[r][c];
-				z.draw(this.context,y,x,surroundings,c,r);
-			}catch(e){
+	redraw(){
+		
+		if(this.isDirty){
+			super.redraw();
+			for(var i= 0; i < this.dirtyZones.length;i++){
+				var zone = this.dirtyZones[i];
+				var surroundings = this.grid.getSurroundingZones(zone.x,zone.y);
+				var sprite = zone.z.getSprite(surroundings);
+				Layer.drawZone(this.grid,sprite,this.context,zone.x,zone.y);
 			}
+			this.isDirty = false;
 		}
+	}
+
+	get class(){
+		return "TiledLayer";
 	}
 
 }
 
-class staticTileLayer extends tileLayer{
-	constructor(c,r,w,h,zone,container){
-		super(c,r,w,h,zone,container);
-		this.dirty = true;
-	}
-	setZone(x,y,zone){} // do nothing
+class StaticLayer extends TileLayer{
 
-	clear(){
-		if(this.dirty){
-			super.clear();
-		}
+	constructor(grid,tile){
+		super(grid);
+		this.tile = tile;
 	}
-	draw(r,c){
-		if(this.dirty){
-			super.draw(r,c);		
-			if(r+1 >= this.rows && c+1 >= this.cols){
-			this.dirty = false;
+
+	set zone(z){
+		this.staticZone = z;
+	}
+
+	redraw(){
+		
+		if(this.isDirty){
+			super.redraw();
+			console.log('StaticLayer redraw');
+			
+			for(var i = 0 ; i < this.columnCount;i++){
+				for(var j = 0;j<this.rowCount;j++){
+					Layer.drawZone(this.grid,this.tile.getSprite(),this.context,i,j);
+				}
 			}
+			this.isDirty = false;
 		}
-
 	}
+
+	get class(){
+		return "StaticTileLayer";
+	}
+
+	setZone(coords,zone){}
 }
 
-class effectsLayer extends tileLayer{
+class EffectsLayer extends TileLayer{
 
-
-	constructor(c,r,w,h,zone,container){
-		super(c,r,w,h,zone,container);
-		this.node.setAttribute("id","effectsLayer");
+	constructor(grid){
+		super(grid);
+		this.state = false;
+		this.tickscount = 0;
 		this.cache = new Map();
-		this.loadTiles();
-		
+		this.fillCache();
 	}
 
-	draw(r,c){
-		super.draw(r,c);
-		try{
-			var z = this.data[r][c];
-			var tile = null;
-			if(z.needsPower() && !z.isPowered()){
-				tile = this.cache.get("Electra");
+	fillCache(){
+		this.cache.set("Electra",new Tile("assets/effects.png",16,16,16,0));
+		this.cache.set("Water", new Tile("assets/effects.png",16,16,0,0));
+	}
+
+	getTile(name){
+		return this.cache.get(name);
+	}
+
+	redraw(){
+		if(this.dirtyZones.length > 0){
+
+			this.onTic();
+			if(this.isDirty && this.dirtyZones.length > 0){
+				super.redraw();
+				if(this.state){
+					for(var i = 0; i < this.dirtyZones.length;i++){
+						var z = this.dirtyZones[i];
+						var zone = z.z;
+						if(zone instanceof DemandingZone && zone.needsPower() && !zone.isPowered()){
+							if(this.state){
+								var t = this.getTile("Electra");
+								Layer.drawZone(this.grid,t,this.context,z.x,z.y);
+							}
+						}
+					}
+				}
+				this.state = !this.state;
+				this.isDirty = false;
 			}
-			else if(z.needsWater()){
-				tile = this.cache.get("Water");	
-			}
-			if(tile != null){
-				tile.draw(this.context, r*16,c*16);
-			}
-		}catch(e){
-			console.log(e);
+		}
+	}
+	setZone(coords,zone){
+		if(zone instanceof DemandingZone){
+			super.setZone(coords,zone);
+		}
+	}
+	onTic(){
+		this.tickscount++;
+		if(this.tickscount%2 == 0){
+			this.tickscount = 0;
+			this.isDirty =true;
 		}
 	}
 
-	toString(){
-		return 'effectsLayer';
-	}
 
-	loadTiles(){
-		this.cache.set("Electra",new Tile("Electra","assets/effects.png",16,16,16,0));
-		this.cache.set("Water", new Tile( "Water"  ,"assets/effects.png",16,16,0,0));
-	}
-
-
-	getTile(type){
-		return cache.get(type);
-	}
-}
-
-class Tile{
-	constructor(name,imgSrc,w,h,offsetX, offsetY){
-		this.image = new Image();
-		this.image.src = imgSrc;
-		this.name = name;
-		this.width = w;
-		this.height = h;
-		this.offsetX = offsetX;
-		this.offsetY = offsetY;
-	}
-
-	getSprite(){
-		return this.image;
-	}
-
-	draw(context,y,x){
-
-		context.drawImage(this.getSprite(),this.offsetX,this.offsetY,this.width,this.height,x,y,this.width,this.height);
-	}
 }
