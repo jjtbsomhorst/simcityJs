@@ -1,5 +1,7 @@
 var p = {
-        Toolbar: 'Toolbar',
+        MenuBar: 'toolbars/menubar',
+        Toolbar: 'toolbars/Toolbar',
+        StatusBar: 'toolbars/statusbar', 
         ZoneLoader: "util/ZoneLoader",
         Sprite: 'zones/Sprite',
         Tile: 'zones/Tile',
@@ -19,9 +21,12 @@ var p = {
         Powergrid: 'layers/Powergrid',
         EffectsLayer: 'layers/EffectsLayer',
         RoadGrid: 'layers/RoadGrid',
+               
         Grid: 'Grid',
+        MouseHandler: "MouseHandler",
         Game: 'Game',
         BetterSet: "BetterSet",
+
     };
 
 var objects = [];

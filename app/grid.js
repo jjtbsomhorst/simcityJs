@@ -8,8 +8,6 @@ class Grid{
 		this.layers = new Map();
 		this.currentTool = null;
 		this.container = container;
-		this.container.addEventListener("click",(e)=>{this.onCanvasClick(e)});
-		this.container.addEventListener('contextmenu',(e)=>{this.onCanvasRightClick(e)});
 		this.height = h;
 		this.width = w;
 		this.initLayers();
@@ -31,12 +29,7 @@ class Grid{
 		this.layers.set('Power',new PowerGrid(this));
 		this.layers.set('Zones',new ZonesLayer(this));
 		this.layers.set('Effects',new EffectsLayer(this));
-		//this.layers.push(new StaticLayer(this,ZoneLoader.getZoneObject("Soil",-1,-1)));
-		
-		//this.layers.push(new RoadGrid(this));
-		//this.layers.push(new PowerGrid(this));
-		//this.layers.push(new ZonesLayer(this));
-		// this.layers.push(new EffectsLayer(this));
+
 	}
 	
 	get tileWidth(){
@@ -64,31 +57,7 @@ class Grid{
 	setCurrentTool(z){
 		this.currentTool = z;
 	}
-
-	onCanvasRightClick(event){
-		event.preventDefault();
-		this.handleClick(event.x,event.y,null);
-		
-	}
-
-	onCanvasClick(event){
-		if(this.currentTool != null){
-			event.preventDefault();
-			this.handleClick(event.x,event.y,this.currentTool);
-		}
-	}
-
-	handleClick(x,y,tool){
-		
-		let coords = this.getCoordinates(event.x,event.y);
-		let newZone = ZoneLoader.getZoneObject(tool,coords[0],coords[1]);
-		let currentZones = this.getZones(coords);
-
-		this.layers.forEach((layer)=>{
-			layer.setZone(coords,newZone,currentZones);
-		});
-	}
-
+	
 	calculateCoordinate(c,length){
 		var row = c;
 		if(c < length){
@@ -144,6 +113,15 @@ class Grid{
 			
 		}
 		return surroundings;
+	}
+
+
+	setZone(coords,newZone){
+		let currentZones = this.getZones(coords);
+		
+		this.layers.forEach((layer)=>{
+			layer.setZone(coords,newZone,currentZones);
+		});
 	}
 
 	getZones(coords){

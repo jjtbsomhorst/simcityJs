@@ -43,9 +43,7 @@ class PowerGrid extends TileLayer{
 	}
 
 	togglePower(zone, power){
-		console.log("TogglePower");
-		console.log(zone);
-		console.log(""+power);
+		
 		if(zone != null){
 			
 			if(zone instanceof DemandingZone && zone.isPowered() != power){

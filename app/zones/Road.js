@@ -22,9 +22,7 @@ class Road extends Zone{
 
 	getSprite(surroundings){
 		
-		console.log(this.id);
-		console.log(this.x);
-		console.log(this.y);
+		
 		if(this.surroundings == null || !this.surroundings.equals(new BetterSet(surroundings))){
 		
 		var center = this;
