@@ -10,8 +10,7 @@ class DemandingZone extends Zone{
 	setPowered(p){
 		this.powered = p;
 	}
-
-
+	
 	needsPower(){
 		return true;
 	}

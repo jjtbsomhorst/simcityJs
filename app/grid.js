@@ -22,7 +22,12 @@ class Grid{
 		this.isDirty = true;
 	}
 
-
+	getLayer(name){
+		if(this.layers.has(name)){
+			return this.layers.get(name);
+		}
+		return null;
+	}
 	initLayers(){
 		this.layers.set('Static',new StaticLayer(this,ZoneLoader.getZoneObject("Soil",-1,-1)));
 		this.layers.set('Road',new RoadGrid(this));

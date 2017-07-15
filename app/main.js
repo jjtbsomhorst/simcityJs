@@ -21,12 +21,13 @@ var p = {
         Powergrid: 'layers/Powergrid',
         EffectsLayer: 'layers/EffectsLayer',
         RoadGrid: 'layers/RoadGrid',
-               
+        BaseProcess: 'processes/BaseProcess',
+        FundsProcess: 'processes/FundsProcess',
+        InhabitantProcess: 'processes/InhabitantProcess',
         Grid: 'Grid',
         MouseHandler: "MouseHandler",
         Game: 'Game',
         BetterSet: "BetterSet",
-
     };
 
 var objects = [];

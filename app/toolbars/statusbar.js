@@ -13,7 +13,7 @@ class StatusBar extends MenuBar{
     draw(){
         super.draw();
         this.menubarNode.style.font = "15px verdana, sans-serif";
-        this.menubarNode.innerHTML  = 'hello!!';
+        this.menubarNode.innerHTML  = '<b>Funds:</b>';
         
     }
 

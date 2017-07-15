@@ -9,19 +9,18 @@ class game{
 		window.onload = this.onLoad(event);
 		this.frameCount = 0;
 		this.maxFrameCount = 15;
-		
 	}
 
 	onLoad(event){
 		this.initCanvas();
-		
+		this.initProcesss();
+
 	}
 
 	initCanvas(){
 		
 		if(!this.init){
-			
-				
+
 			this.height = this.node.getAttribute("height");
 			this.width = this.node.getAttribute("width");
 			this.grid = new Grid(this.height/16,this.width/16,this.width,this.height,this.node);
@@ -34,10 +33,24 @@ class game{
 			this.draw();
 			this.toolbar.draw();
 			this.statusbar.draw()
+			
 		}
 	}
 
-	
+	initProcesss(){
+		this.processes = [];
+		this.processes.push(new FundsProcess(this));
+		this.processes.push(new InhabitantProcess(this));
+		this.startProcesses();
+	}
+
+	startProcesses(){
+		setInterval((event)=>{
+			this.processes.forEach((p)=>{
+				p.tick();
+			})
+		},1000);
+	}
 
 	draw(){
 		if(this.canDraw()){
