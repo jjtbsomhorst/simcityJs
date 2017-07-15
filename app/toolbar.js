@@ -17,7 +17,7 @@ class Toolbar{
 		this.generateButton("commercial",imgZones,"-16px","-16px",this.node);
 		this.generateButton("industrial",imgZones,"-32px","-16px",this.node);
 		this.generateButton("road",imgZones,"-32px","0",this.node);
-		this.generateButton("powerpole",imgZones,"-16px","0",this.node);
+		this.generateButton("PowerLine",imgZones,"-16px","0",this.node);
 		this.generateButton("shovel",imgZones,"0","0",this.node);
 
 		this.generateButton("policeDepartment",imgutils,"0","0",this.node);
@@ -43,13 +43,6 @@ class Toolbar{
 
 	onBtnClick(event){
 		event.preventDefault();
-		var zoneObject = ZoneLoader.getZoneObject(event.target.id);
-		if(zoneObject == null){
-			console.error('Zone object could not be determined '.event.target.id);
-			return false;
-		}
-
-		this.grid.setCurrentTool(zoneObject);
-
+		this.grid.setCurrentTool(event.target.id);
 	}
 }

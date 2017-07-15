@@ -19,7 +19,6 @@ class game{
 	initCanvas(){
 		var self = this;
 		if(!this.init){
-			console.log('load stuff');
 			
 			this.height = this.node.getAttribute("height");
 			this.width = this.node.getAttribute("width");
