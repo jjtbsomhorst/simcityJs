@@ -20,11 +20,6 @@ class PowerLine extends DemandingZone{
 	getSprite(surroundings){
 		
 		if(this.surroundings == null || !this.surroundings.equals(new BetterSet(surroundings))){
-		console.log('-----')
-		console.log(this.id);
-		console.log(this.x);
-		console.log(this.y);
-		console.log('-----')
 		var center = this;
 		var top = new Soil();
 		var left = new Soil();
@@ -48,36 +43,37 @@ class PowerLine extends DemandingZone{
 		}
 
 		// cross
-		if(ZoneLoader.contains(this,top,'class') 
-			&& ZoneLoader.contains(this,left,'class') 
-			&& ZoneLoader.contains(this,bottom,'class') 
-			&& ZoneLoader.contains(this,right,'class')){
+		if(ZoneLoader.contains(this,top,'superclass') 
+			&& ZoneLoader.contains(this,left,'superclass') 
+			&& ZoneLoader.contains(this,bottom,'superclass') 
+			&& ZoneLoader.contains(this,right,'superclass')){
 			
 			xOffset = 96;
-		}else if(ZoneLoader.contains(this,top,'class') && ZoneLoader.contains(this,left,'class') &&  ZoneLoader.contains(this,right,'class')){
+		}else if(ZoneLoader.contains(this,top,'superclass') && ZoneLoader.contains(this,left,'superclass') &&  ZoneLoader.contains(this,right,'superclass') 
+				&& ZoneLoader.contains(this,top,'superclass') && ZoneLoader.contains(this,left,'superclass') &&  ZoneLoader.contains(this,right,'superclass')){
 			xOffset = 64
 
-		}else if(ZoneLoader.contains(this,top,'class') && ZoneLoader.contains(this,left,'class')  && ZoneLoader.contains(this,bottom,'class')){
+		}else if(ZoneLoader.contains(this,top,'superclass') && ZoneLoader.contains(this,left,'superclass')  && ZoneLoader.contains(this,bottom,'superclass')){
 			xOffset = 112;
-		}else  if(ZoneLoader.contains(this,top,'class') && ZoneLoader.contains(this,left,'class')){
+		}else  if(ZoneLoader.contains(this,top,'superclass') && ZoneLoader.contains(this,left,'superclass')){
 			xOffset = 48;
 			yOffset = 16;
-		}else if(ZoneLoader.contains(this,top,'class') && ZoneLoader.contains(this,right,'class')  && ZoneLoader.contains(this,bottom,'class')){
+		}else if(ZoneLoader.contains(this,top,'superclass') && ZoneLoader.contains(this,right,'superclass')  && ZoneLoader.contains(this,bottom,'superclass')){
 			xOffset = 96;
 			yOffset = 16;
-		}else if(ZoneLoader.contains(this,top,'class') && ZoneLoader.contains(this,right,'class')){
+		}else if(ZoneLoader.contains(this,top,'superclass') && ZoneLoader.contains(this,right,'superclass')){
 			xOffset = 32;
 			yOffset = 16;
-		}else if(ZoneLoader.contains(this,bottom,'class') && ZoneLoader.contains(this,right,'class') && ZoneLoader.contains(this,left,'class')){
+		}else if(ZoneLoader.contains(this,bottom,'superclass') && ZoneLoader.contains(this,right,'superclass') && ZoneLoader.contains(this,left,'superclass')){
 			xOffset = 80;
 			yOffset = 16;
-		}else if(ZoneLoader.contains(this,bottom,'class') && ZoneLoader.contains(this,right,'class')){
+		}else if(ZoneLoader.contains(this,bottom,'superclass') && ZoneLoader.contains(this,right,'superclass')){
 			xOffset = 32;
 		}	
-		else if(ZoneLoader.contains(this,bottom,'class') && ZoneLoader.contains(this,left,'class')){
+		else if(ZoneLoader.contains(this,bottom,'superclass') && ZoneLoader.contains(this,left,'superclass')){
 			xOffset = 48;
 		
-		}else if(ZoneLoader.contains(this,left,'class') || ZoneLoader.contains(this,right,'class')){
+		}else if(ZoneLoader.contains(this,left,'superclass') || ZoneLoader.contains(this,right,'superclass')){
 			xOffset = 16;
 		}
 		

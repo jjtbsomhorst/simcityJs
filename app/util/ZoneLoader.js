@@ -26,91 +26,18 @@ class ZoneLoader{
 				});
 				break;
 			case 'superclass':
-				let sourceClass = ZoneLoader.getSuperClassName(source);
 
 				compareTo.forEach((entry)=>{
 					try{
-						if(ZoneLoader.getSuperClassName(entry) == source){
-							return true;
+						if(ZoneLoader.getSuperClassName(entry) == ZoneLoader.getSuperClassName(source)){
+							doesContain = true;
+							return;
 						}
 					}catch(e){}
 				});
 				break;
-
 		}
 		return doesContain;
-	}
-
-	static equalsAll(source,compareTo,whatToCompare){
-		return false;
-		// let equals = false;
-		// for(var i = 0; i < compareTo.length;i++){
-			
-		// 	let sourceCompareTo = null;
-		// 	let destinationCompareTo = null;
-		// 	switch(whatToCompare){
-		// 		case 'class':
-		// 			sourceCompareTo = source.getClass();
-		// 			try{
-		// 				if(Array.isArray(compareTo[i])){
-		// 					destinationCompareTo = [];
-		// 					compareTo[i].forEach((entry)=>{
-		// 						if(entry == null){
-		// 							destinationCompareTo.push(null);
-		// 						}else{
-		// 							destinationCompareTo.push(entry.getClass());
-		// 						}
-		// 					});
-		// 				}else{
-		// 					if(compareTo[i] != null){
-		// 						destinationCompareTo = compareTo[i].getClass();	
-		// 					}
-		// 				}
-						
-		// 			}catch(e){}
-		// 		break;
-		// 		case 'superclass':
-		// 			sourceCompareTo = ZoneLoader.getSuperClassName(source);
-		// 			try{
-		// 				if(Array.isArray(compareTo[i])){
-		// 					destinationCompareTo = [];
-		// 					compareTo[i].forEach((entry)=>{
-		// 						if(entry != null){
-		// 							destinationCompareTo.push(ZoneLoader.getSuperClassName(entry));
-		// 						}else{
-		// 							destinationCompareTo.push(null);
-		// 						}
-								
-		// 					});
-		// 				}else{
-		// 					destinationCompareTo =  ZoneLoader.getSuperClassName(compareTo[i]);
-		// 				}
-		// 			}catch(e){}
-		// 		break;
-		// 		default: 
-		// 			sourceCompareTo = source;
-		// 			destinationCompareTo = compareTo[i];
-		// 		break;
-		// 	}
-
-		// 	if(Array.isArray(destinationCompareTo)){
-		// 		destinationCompareTo.forEach((entry)=>{
-		// 			if(!equals){
-		// 				if(entry === sourceCompareTo){
-		// 					equals = true;
-		// 				}
-		// 			}
-					
-		// 		});
-		// 	}else{
-		// 		equals = (sourceCompareTo == destinationCompareTo);
-		// 	}
-			
-		// 	if(!equals){
-		// 		break;
-		// 	}
-		// }
-		// return equals;
 	}
 
 	static getSuperClassName(o){
