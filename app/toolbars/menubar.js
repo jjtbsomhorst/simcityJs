@@ -43,4 +43,10 @@ class MenuBar{
 
     }
 
+    sendMessage(type,value){
+        this.menubars.forEach((m)=>{
+            m.sendMessage(type,value);
+        })
+    }
+
 }

@@ -10,7 +10,7 @@ class RoadGrid extends TileLayer{
     acceptZone(coordinates,zone,previousZones){
         var returnValue = super.acceptZone(coordinates,zone,previousZones);
         if(returnValue){
-            var zones = this.grid.getZones(coordinates);
+            var zones = this.grid.getZones(coordinates,true);
             
             zones.forEach((z)=>{
                 if(z != null && !(z instanceof PowerLine)){
@@ -21,7 +21,5 @@ class RoadGrid extends TileLayer{
 		return returnValue;
 	}
 
-    setZone(coordinates,zone){
-        super.setZone(coordinates,zone);
-    }
+    
 }

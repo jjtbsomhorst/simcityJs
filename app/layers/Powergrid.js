@@ -10,14 +10,14 @@ class PowerGrid extends TileLayer{
 	setZone(coordinates,zone,currentZone){
 		
 		super.setZone(coordinates,zone,currentZone);
-		
+		let returnValue = false;
 		
 		if(zone instanceof PowerPlant){
 			if(!this.powersources.has(zone.x)){
 				this.powersources.set(zone.x,new Map());
 			}
 			this.powersources.get(zone.x).set(zone.y,zone);
-			
+			returnValue = true;
 		}else if(zone instanceof Soil){
 			if(this.powersources.has(zone.x) && this.powersources.get(zone.x).get(zone.y) != null){
 				this.powersources.get(zone.x).delete(zone.y);
@@ -25,6 +25,9 @@ class PowerGrid extends TileLayer{
 					this.powersources.delete(zone.x);
 				}
 			}
+			returnValue = true;
+		}else if(zone instanceof PowerLine){
+			returnValue = true;
 		}
 		
 		this.togglePower(zone,false);
@@ -35,6 +38,7 @@ class PowerGrid extends TileLayer{
 				}
 			});
 		});
+		return returnValue;
 	}
 	
 

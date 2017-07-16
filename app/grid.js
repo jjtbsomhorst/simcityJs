@@ -1,7 +1,7 @@
 "use strict"
 class Grid{
 
-	constructor(r,c,w,h,container){
+	constructor(r,c,w,h,container,game){
 		
 		this.columns = c;
 		this.rows = r;
@@ -10,6 +10,7 @@ class Grid{
 		this.container = container;
 		this.height = h;
 		this.width = w;
+		this.game = game;
 		this.initLayers();
 		this.initData();
 	}
@@ -63,6 +64,9 @@ class Grid{
 		this.currentTool = z;
 	}
 	
+	
+
+
 	calculateCoordinate(c,length){
 		var row = c;
 		if(c < length){
@@ -123,19 +127,28 @@ class Grid{
 
 	setZone(coords,newZone){
 		let currentZones = this.getZones(coords);
-		
+		let zoneIsSet = false;
 		this.layers.forEach((layer)=>{
-			layer.setZone(coords,newZone,currentZones);
+			if(layer.setZone(coords,newZone,currentZones)){
+				zoneIsSet = true;
+			}
 		});
+		if(zoneIsSet){
+			this.game.sendMessage('setzone',newZone);
+		}
+		
 	}
 
-	getZones(coords){
+	getZones(coords,skipNull){
 		let zones = [];
 		this.layers.forEach((layer)=>{
 			try{
 				zones.push(layer.getZone(coords).z)
 			}catch(e){
-				zones.push(null);
+				if(!skipNull){
+					zones.push(null);
+				}
+				
 			}
 		});
 		return zones;

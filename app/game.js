@@ -23,17 +23,17 @@ class game{
 
 			this.height = this.node.getAttribute("height");
 			this.width = this.node.getAttribute("width");
-			this.grid = new Grid(this.height/16,this.width/16,this.width,this.height,this.node);
-			this.toolbar = new Toolbar(this.grid);
-			this.toolbar.setContainer("btnBar");
-			this.statusbar = new StatusBar();
-			this.statusbar.setContainer("btnBar");
+			this.grid = new Grid(this.height/16,this.width/16,this.width,this.height,this.node,this);
+			this.menubar = new MenuBar(this.grid);
+			this.menubar.addMenuBar(new ZoneToolbar(this.grid));
+			this.menubar.addMenuBar(new UtilToolbar(this.grid));
+			this.menubar.addMenuBar(new StatusBar(this.grid));
+			this.menubar.setContainer("btnBar");
+			
 			this.mouseHandler = new GridMouseHandler(this,this.grid);
 			this.init = true;
 			this.draw();
-			this.toolbar.draw();
-			this.statusbar.draw()
-			
+			this.menubar.draw();
 		}
 	}
 
@@ -70,6 +70,12 @@ class game{
 		return (this.frameCount == 0);
 	}
 
+	sendMessage(type,value){
+		this.menubar.sendMessage(type,value);
+		this.processes.forEach((p)=>{
+			p.sendMessage(type,value);
+		})
+	}
 		
 }
 window.g = new game("canvas");

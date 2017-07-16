@@ -1,6 +1,8 @@
 var p = {
         MenuBar: 'toolbars/menubar',
         Toolbar: 'toolbars/Toolbar',
+        Utilbar: 'toolbars/UtilBar',
+        zonebar: 'toolbars/ZoneToolbar',
         StatusBar: 'toolbars/statusbar', 
         ZoneLoader: "util/ZoneLoader",
         Sprite: 'zones/Sprite',

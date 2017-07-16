@@ -18,7 +18,6 @@ class GridMouseHandler{
     }
 
     onCanvasRightClick(e){
-        console.log("right click");
         e.preventDefault();
         this.grid.setCurrentTool(null);
         handleClick(e);
@@ -30,17 +29,16 @@ class GridMouseHandler{
 
     onMouseUp(e){
         e.preventDefault();
-        console.log('mouse up')
     }
     onMouseDown(e){
         e.preventDefault();
-        console.log('mouse down');
+
     }
 
     handleClick(event){
         let coords = this.grid.getCoordinates(event.x,event.y);
 		let newZone = ZoneLoader.getZoneObject(this.grid.currentTool,coords[0],coords[1]);
-		let currentZones = this.grid.getZones(coords);
+		let currentZones = this.grid.getZones(coords,true);
         this.grid.setZone(coords,newZone);
 		
     }
