@@ -8,6 +8,7 @@ class ZonesLayer extends TileLayer{
     }
     
     redraw(){
+        this.isDirty = true;
         super.redraw();
     }
 }

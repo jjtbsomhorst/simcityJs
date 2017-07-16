@@ -16,8 +16,12 @@ class PowerGrid extends TileLayer{
 			if(!this.powersources.has(zone.x)){
 				this.powersources.set(zone.x,new Map());
 			}
-			this.powersources.get(zone.x).set(zone.y,zone);
-			returnValue = true;
+			
+			if(!this.powersources.get(zone.x).has(zone.y)){
+				this.powersources.get(zone.x).set(zone.y,zone);
+				returnValue = true;
+			}
+
 		}else if(zone instanceof Soil){
 			if(this.powersources.has(zone.x) && this.powersources.get(zone.x).get(zone.y) != null){
 				this.powersources.get(zone.x).delete(zone.y);

@@ -1,6 +1,6 @@
 "use strict"
 
-class Inhabitatant{
+class Inhabitant{
 
     constructor(){
         this.home = null;

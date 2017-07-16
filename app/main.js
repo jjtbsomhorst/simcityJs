@@ -3,7 +3,8 @@ var p = {
         Toolbar: 'toolbars/Toolbar',
         Utilbar: 'toolbars/UtilBar',
         zonebar: 'toolbars/ZoneToolbar',
-        StatusBar: 'toolbars/statusbar', 
+        StatusBar: 'toolbars/FundsBar', 
+        inhabitantsBar: 'toolbars/InhabitantsBar', 
         ZoneLoader: "util/ZoneLoader",
         Sprite: 'zones/Sprite',
         Tile: 'zones/Tile',
@@ -30,6 +31,7 @@ var p = {
         MouseHandler: "MouseHandler",
         Game: 'Game',
         BetterSet: "BetterSet",
+        Inhabitant: "entities/inhabitant"
     };
 
 var objects = [];

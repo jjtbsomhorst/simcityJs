@@ -27,7 +27,8 @@ class game{
 			this.menubar = new MenuBar(this.grid);
 			this.menubar.addMenuBar(new ZoneToolbar(this.grid));
 			this.menubar.addMenuBar(new UtilToolbar(this.grid));
-			this.menubar.addMenuBar(new StatusBar(this.grid));
+			this.menubar.addMenuBar(new FundsBar(this.grid));
+			this.menubar.addMenuBar(new InhabitantBar(this.grid));
 			this.menubar.setContainer("btnBar");
 			
 			this.mouseHandler = new GridMouseHandler(this,this.grid);
@@ -49,7 +50,7 @@ class game{
 			this.processes.forEach((p)=>{
 				p.tick();
 			})
-		},1000);
+		},250);
 	}
 
 	draw(){

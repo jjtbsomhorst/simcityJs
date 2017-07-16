@@ -1,8 +1,5 @@
 "use strict"
-
-
-
-class StatusBar extends MenuBar{
+class FundsBar extends MenuBar{
 
     constructor(grid){
         super();
