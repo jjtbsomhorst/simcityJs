@@ -26,12 +26,18 @@ var p = {
         RoadGrid: 'layers/RoadGrid',
         BaseProcess: 'processes/BaseProcess',
         FundsProcess: 'processes/FundsProcess',
+        trafficLayer: 'layers/TrafficLayer',
+        trafficZone: 'zones/TrafficZone',
         InhabitantProcess: 'processes/InhabitantProcess',
         Grid: 'Grid',
         MouseHandler: "MouseHandler",
         Game: 'Game',
         BetterSet: "BetterSet",
-        Inhabitant: "entities/inhabitant"
+        
+        Inhabitant: "entities/inhabitant",
+        PathFinding: "processes/PathFinding",
+        Point: "Point",
+        
     };
 
 var objects = [];

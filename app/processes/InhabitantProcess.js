@@ -13,12 +13,13 @@ class InhabitantProcess extends BaseProcess{
         this.workplaces = new Map();
         this.rows =this.game.grid.rows;
         this.cols = this.game.grid.columns;
-
+        this.travelers = [];
     }
 
 
     tick(){
         if(!this.busy){ // not busy and got queue
+            
             this.busy = true;
 
             // first help the homeless;
@@ -49,25 +50,54 @@ class InhabitantProcess extends BaseProcess{
                 }
             });
 
-            if(this.outsideconnections.size > 0){
+            if(this.outsideconnections.size > 0 ){ //
                 let inhabitant = new Inhabitant();
 
 
                 let zone = this.getFreeResidentialZone();
-
+                
 
                 if(zone != null){
                     let inhabitant = new Inhabitant();
                     inhabitant.home = zone;
                     this.inhabitants.push(inhabitant);
-                    zone.addInhabitant(inhabitant);
-                    this.workless.push(inhabitant);
+
+                    let key = this.outsideconnections.keys().next().value;
+
+                    let startingpoint = this.outsideconnections.get(key);
+                    let destination = zone;
+                    let pf = new PathFinder(startingpoint,destination,this.game.grid);
+                    let path = pf.getPath();
+                    
+
+                    if(path != null && path.length > 0){ // if we have a path and the path isn't emtpy
+                        let traveler = {};
+                        traveler.path = path;
+                        traveler.index = 0;
+                        traveler.endPoint = destination;
+                        traveler.inhabitant = inhabitant;
+                        this.travelers.push(traveler);
+                    }
+
+                    
                     this.game.sendMessage("newcitizen",this.inhabitants.length);
                 }
 
             }
 
+            this.travelers.forEach((traveler,index)=>{
+                if(traveler.index < traveler.path.length-1){
+                    traveler.index = traveler.index+1;
+                    let currentPoint= traveler.path[traveler.index];
+                    
+                    let zone = new TrafficZone(currentPoint.getX(),currentPoint.getY());
+                    this.game.grid.setZone([currentPoint.getX(),currentPoint.getY()],zone);
+                }else{
+                    traveler.endPoint.addInhabitant(traveler.inhabitant);
+                    this.travelers.splice(index,1);
+                }
 
+            });
             this.busy = false;   
         }
     }

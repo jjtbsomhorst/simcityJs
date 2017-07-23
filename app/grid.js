@@ -35,7 +35,7 @@ class Grid{
 		this.layers.set('Power',new PowerGrid(this));
 		this.layers.set('Zones',new ZonesLayer(this));
 		this.layers.set('Effects',new EffectsLayer(this));
-
+		this.layers.set('Traffic',new TrafficLayer(this));
 	}
 	
 	get tileWidth(){
@@ -126,6 +126,7 @@ class Grid{
 
 
 	setZone(coords,newZone){
+	
 		let currentZones = this.getZones(coords);
 		let zoneIsSet = false;
 		this.layers.forEach((layer)=>{
