@@ -116,7 +116,7 @@ class InhabitantProcess extends BaseProcess{
                     
                 }else{
                     employee.endPoint.addEmployee(employee.inhabitant);
-                    this.game.sendMessage("newEmployee",this.inhabitants.length);
+                    this.game.sendMessage("newemployee",this.inhabitants.length);
                     this.employees.splice(index,1);
                 }
             });

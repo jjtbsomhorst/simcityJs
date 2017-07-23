@@ -10,10 +10,10 @@ class ZonesLayer extends TileLayer{
     sendMessage(type,value){
 
         switch(type){
-            case 'newCitizen':
+            case 'newcitizen':
                 this.isDirty = true;
             break;
-            case 'newEmployee':
+            case 'newemployee':
                 this.isDirty = true;
             break;
         }
