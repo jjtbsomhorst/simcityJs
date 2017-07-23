@@ -76,6 +76,7 @@ class game{
 		this.processes.forEach((p)=>{
 			p.sendMessage(type,value);
 		})
+		this.grid.sendMessage(type,value);
 	}
 		
 }

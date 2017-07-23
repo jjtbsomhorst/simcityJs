@@ -1,5 +1,4 @@
 "use strict"
-
 class PathFinder{
 
     constructor(startingPoint, endPoint,grid){

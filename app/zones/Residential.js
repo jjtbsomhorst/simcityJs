@@ -6,7 +6,7 @@ class Residential extends DemandingZone{
 		
 		super.class = "residentialZone";
 		this.inhabitants = [];
-		this.maxInhabitantCount = Math.floor(Math.random() * 250) + 1 ;;
+		this.maxInhabitantCount = Math.floor(Math.random() * 20) + 1 ;;
 		
 		
 	}

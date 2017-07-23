@@ -24,7 +24,10 @@ class Layer{
 		this.data = new Map();
 		this.drawableZones = ZoneLoader.getZoneTypes();
 	}
-
+	
+	sendMessage(type,value){
+        
+    }
 	
 	setDrawableZones(zones){
 		this.drawableZones = zones;
@@ -71,15 +74,15 @@ class Layer{
 			if(currentZone == null || (currentZone.z.getClass() != zone.getClass())){
 				this.data.get(coordinates[0]).set(coordinates[1],{z: zone, x:coordinates[0],y:coordinates[1]});
 				this.isDirty = true;
-				return true;
+
 			}
 			
 		}else if(zone.constructor.name == 'Soil'){
 			this.data.get(coordinates[0]).delete(coordinates[1]); // its soil -> reset of zones
 			this.isDirty= true;
-			return true;
+			
 		}
-		return false;
+		return this.isDirty;
 	}
 
 

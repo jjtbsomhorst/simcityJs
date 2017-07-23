@@ -80,7 +80,7 @@ class InhabitantProcess extends BaseProcess{
                     }
 
                     
-                    this.game.sendMessage("newcitizen",this.inhabitants.length);
+                    
                 }
 
             }
@@ -90,10 +90,9 @@ class InhabitantProcess extends BaseProcess{
                     traveler.index = traveler.index+1;
                     let currentPoint= traveler.path[traveler.index];
                     
-                    let zone = new TrafficZone(currentPoint.getX(),currentPoint.getY());
-                    this.game.grid.setZone([currentPoint.getX(),currentPoint.getY()],zone);
                 }else{
                     traveler.endPoint.addInhabitant(traveler.inhabitant);
+                    this.game.sendMessage("newcitizen",this.inhabitants.length);
                     this.travelers.splice(index,1);
                 }
 

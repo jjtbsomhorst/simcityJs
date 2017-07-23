@@ -7,8 +7,10 @@ class ZonesLayer extends TileLayer{
         super.removeDrawableZones(['Road','PowerLine','Soil','PowerPlant']);
     }
     
-    redraw(){
-        this.isDirty = true;
-        super.redraw();
+    sendMessage(type,value){
+        if(type == 'newcitizen'){
+            this.isDirty = true;
+        }   
     }
+
 }

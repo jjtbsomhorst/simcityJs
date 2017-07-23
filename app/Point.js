@@ -44,19 +44,22 @@ class Point{
 	}
 
 	getHeuristicCost(){
-		let heuristicCost = 0;
-		
-        if(this.getX() <this.destination.getX()){
-            heuristicCost += (this.destination.getX() - this.getX()) * 10
-        }else{
-            heuristicCost += (this.getX() - this.destination.getX()) * 10
-        }
+		let heuristicCost = 99999;
+		if(this.destination != null){
+			heuristicCost = 0;
+			if(this.getX() <this.destination.getX()){
+				heuristicCost += (this.destination.getX() - this.getX()) * 10
+			}else{
+				heuristicCost += (this.getX() - this.destination.getX()) * 10
+			}
 
-        if(this.getY() <this.destination.getY()){
-            heuristicCost += (this.destination.getY() - this.getY()) * 10
-        }else{
-            heuristicCost += (this.getY() - this.destination.getY()) * 10
-        }
+			if(this.getY() <this.destination.getY()){
+				heuristicCost += (this.destination.getY() - this.getY()) * 10
+			}else{
+				heuristicCost += (this.getY() - this.destination.getY()) * 10
+			}
+		}
+       
 
         return heuristicCost;
 	}

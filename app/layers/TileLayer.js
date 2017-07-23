@@ -16,7 +16,7 @@ class TileLayer extends Layer{
 	}
 
 	redraw(){
-
+		
 		if(this.isDirty){
 			super.redraw();			
 			this.data.forEach((row)=>{
