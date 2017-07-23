@@ -29,6 +29,7 @@ class Zone{
 	}
 
 	draw(context,x,y,surroundings,c,r){
+		console.log("draw");
 		context.drawImage(this.getSprite(),x,y);
 	}
 

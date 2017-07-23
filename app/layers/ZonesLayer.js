@@ -8,9 +8,18 @@ class ZonesLayer extends TileLayer{
     }
     
     sendMessage(type,value){
-        if(type == 'newcitizen'){
-            this.isDirty = true;
-        }   
+
+        switch(type){
+            case 'newCitizen':
+                this.isDirty = true;
+            break;
+            case 'newEmployee':
+                this.isDirty = true;
+            break;
+        }
+
+        
+
     }
 
 }

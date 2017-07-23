@@ -23,6 +23,7 @@ class Residential extends DemandingZone{
 	}
 
 	getSprite(){
+		
 		if(this.inhabitants.length > 0){
 		if(this.maxInhabitantCount > 0){
 			if(this.maxInhabitantCount <10){

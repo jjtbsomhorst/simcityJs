@@ -14,6 +14,7 @@ class InhabitantProcess extends BaseProcess{
         this.rows =this.game.grid.rows;
         this.cols = this.game.grid.columns;
         this.travelers = [];
+        this.employees = [];
     }
 
 
@@ -43,7 +44,16 @@ class InhabitantProcess extends BaseProcess{
                     let h = this.workless.shift();
                     if(wZone != null){
                         h.work = wZone;
-                        wZone.addEmployee(h);
+                        let pf = new PathFinder(h.home,h.work,this.game.grid);
+                        let path = pf.getPath();
+                        if(path!=null){
+                            let employee = {};
+                            employee.path = path;
+                            employee.index = 0;
+                            employee.endPoint = wZone;
+                            employee.inhabitant = h;
+                            this.employees.push(employee);
+                        }
                     }else{
                         this.workless.push(h);
                     }
@@ -77,13 +87,13 @@ class InhabitantProcess extends BaseProcess{
                         traveler.endPoint = destination;
                         traveler.inhabitant = inhabitant;
                         this.travelers.push(traveler);
-                    }
-
-                    
-                    
+                    }                    
                 }
 
             }
+
+
+
 
             this.travelers.forEach((traveler,index)=>{
                 if(traveler.index < traveler.path.length-1){
@@ -92,11 +102,25 @@ class InhabitantProcess extends BaseProcess{
                     
                 }else{
                     traveler.endPoint.addInhabitant(traveler.inhabitant);
+                    this.workless.push(traveler.inhabitant);
                     this.game.sendMessage("newcitizen",this.inhabitants.length);
                     this.travelers.splice(index,1);
                 }
 
             });
+
+            this.employees.forEach((employee,index)=>{
+                if(employee.index < employee.path.length-1){
+                    employee.index = employee.index+1;
+                    let currentPoint= employee.path[employee.index];
+                    
+                }else{
+                    employee.endPoint.addEmployee(employee.inhabitant);
+                    this.game.sendMessage("newEmployee",this.inhabitants.length);
+                    this.employees.splice(index,1);
+                }
+            });
+
             this.busy = false;   
         }
     }

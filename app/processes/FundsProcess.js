@@ -83,7 +83,7 @@ class FundsProcess extends BaseProcess{
 
                                 if(zone instanceof PowerPlant){
                                     currentValue = this.funds.get("Power");
-                                    this.funds.set("Power",currentValue-=250); //  powerplants costs money!!
+                                    this.funds.set("Power",currentValue-=500); //  powerplants costs money!!
                                 }else
                                 if(zone instanceof PowerLine){
                                     currentValue = this.funds.get("Power");
