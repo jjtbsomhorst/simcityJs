@@ -8,6 +8,10 @@ class TileLayer extends Layer{
 		
 	}
 
+	getZones(){
+		return this.data;
+	}
+
 	getZone(coordinates){
 		if(!this.data.has(coordinates[0])){
 			this.data.set(coordinates[0],new Map());

@@ -29,6 +29,6 @@ class ZoneToolbar extends Toolbar{
 	onBtnClick(event){
 		
 		event.preventDefault();
-		this.grid.setCurrentTool(event.target.id);
+		this.grid.sendMessage("ZoneButtonClicked",event.target.id);
 	}
 }

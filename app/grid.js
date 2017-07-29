@@ -30,12 +30,13 @@ class Grid{
 		return null;
 	}
 	initLayers(){
+		
 		this.layers.set('Static',new StaticLayer(this,ZoneLoader.getZoneObject("Soil",-1,-1)));
 		this.layers.set('Road',new RoadGrid(this));
 		this.layers.set('Power',new PowerGrid(this));
 		this.layers.set('Zones',new ZonesLayer(this));
 		this.layers.set('Effects',new EffectsLayer(this));
-		
+		this.layers.set('infolayer',new InformationLayer(this));
 	}
 	
 	get tileWidth(){
@@ -76,6 +77,10 @@ class Grid{
 			row = c/this.tileWidth;
 		}
 		return row;
+	}
+
+	getCoordinatesFromPoint(coordinates){
+		return [coordinates[0]*this.tileWidth, coordinates[1]*this.tileHeight];
 	}
 
 	getCoordinates(x,y){
@@ -144,6 +149,13 @@ class Grid{
 		this.layers.forEach((layer)=>{
 			layer.sendMessage(msg,value);
 		});
+
+		switch(msg){
+			case 'ZoneButtonClicked':
+				this.setCurrentTool(value);
+				break;
+		}
+
 	}
 
 

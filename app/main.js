@@ -23,6 +23,7 @@ var p = {
         Static: 'layers/StaticLayer',
         Powergrid: 'layers/Powergrid',
         EffectsLayer: 'layers/EffectsLayer',
+        InformationLayer: 'layers/InformationLayer',
         RoadGrid: 'layers/RoadGrid',
         BaseProcess: 'processes/BaseProcess',
         FundsProcess: 'processes/FundsProcess',
@@ -33,11 +34,12 @@ var p = {
         MouseHandler: "MouseHandler",
         Game: 'Game',
         BetterSet: "BetterSet",
-        
         Inhabitant: "entities/inhabitant",
         PathFinding: "processes/PathFinding",
         Point: "Point",
-        
+        BasicWindow: 'ui/BasicWindow',
+        BudgetWindow: 'ui/BudgetWindow',
+        ZoneInfoWindow: 'ui/ZoneInfoWindow',
     };
 
 var objects = [];

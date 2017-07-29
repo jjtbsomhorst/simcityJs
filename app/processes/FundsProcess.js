@@ -4,7 +4,7 @@ class FundsProcess extends BaseProcess{
 
     constructor(game){
         super(game);
-        this.ticks = 0;
+        
         this.basefunds = 20*1000;
         this.funds = new Map();
         this.funds.set("Residential",0);
@@ -46,13 +46,18 @@ class FundsProcess extends BaseProcess{
         }
     }
 
-    tick(){
+    tick(zonedata){
+
+        // get powerzones 
+        // get residentials
+
+        super.tick(zonedata);
         if(!this.busy){ // not busy and got queue
+            
             this.busy = true;
             let data = new Map();
 
-            if(this.ticks > 0 && this.ticks % 5  == 0){
-                this.ticks=0;
+            if(this.ticks % 5  == 0){
                 for(let i  = 0; i < this.game.grid.rows ; i++){
                     
                     for(let j = 0; j < this.game.grid.columns ;j++){
@@ -79,17 +84,13 @@ class FundsProcess extends BaseProcess{
                                     let taxRate = this.taxes.get("Residential");
                                     currentValue += ((baseValue / 100 ) * taxRate);
                                     this.funds.set("Residential",currentValue);
-                                }else
-
-                                if(zone instanceof PowerPlant){
+                                }else if(zone instanceof PowerPlant){
                                     currentValue = this.funds.get("Power");
                                     this.funds.set("Power",currentValue-=500); //  powerplants costs money!!
-                                }else
-                                if(zone instanceof PowerLine){
+                                }else if(zone instanceof PowerLine){
                                     currentValue = this.funds.get("Power");
                                     this.funds.set("Power",currentValue-=10);
-                                }else
-                                if(zone instanceof Road){
+                                }else if(zone instanceof Road){
                                     let currentValue = this.funds.get("Road");
                                     this.funds.set("Power",currentValue-=25);
                                 }
@@ -106,10 +107,6 @@ class FundsProcess extends BaseProcess{
                 this.game.sendMessage("totalfunds",this.basefunds);
 
             }
-
-
-
-            this.ticks++;
             this.busy = false;   
         }
     }

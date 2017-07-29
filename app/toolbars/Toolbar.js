@@ -5,6 +5,7 @@ class Toolbar extends MenuBar{
 		super();
 		this.grid = grid;
 		this.currentButton = null;
+		this.buttons = [];
 	}
 
     generateButton(id,img,x,y,parent){
@@ -15,6 +16,7 @@ class Toolbar extends MenuBar{
 		btnRes.style.background = "url('"+img+"') no-repeat "+x+" "+y;
 		btnRes.addEventListener("click",(e)=>{this.onBtnClick(e)});
 		parent.appendChild(btnRes);
+		this.buttons.push(btnRes);
 	}
 	
 	onBtnClick(event){

@@ -18,9 +18,9 @@ class InhabitantProcess extends BaseProcess{
     }
 
 
-    tick(){
-        if(!this.busy){ // not busy and got queue
-            
+    tick(zonedata){
+        super.tick(zonedata);
+        if(!this.busy && this.ticks % 10 == 0 ){ // not busy and got queue
             this.busy = true;
 
             // first help the homeless;

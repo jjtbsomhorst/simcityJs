@@ -24,7 +24,6 @@ class Road extends Zone{
 		
 		
 		if(this.surroundings == null || !this.surroundings.equals(new BetterSet(surroundings))){
-			console.log("Get new sprite..");
 			var center = this;
 			var top = new Soil();
 			var left = new Soil();
