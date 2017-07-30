@@ -5,17 +5,18 @@ class InformationLayer extends Layer{
     constructor(grid){
         super(grid);
         this.setDrawableZones([]); 
-        this.activeWindow = true;
+        this.activeWindow = null;
+        
     }
 
     setZone(coords,newzone){
-
-        
-
         let zones = this.grid.getZones(coords);
         var x = this.context;
         var coords = this.grid.getCoordinatesFromPoint(coords);        
     }
+
+
+
 
     sendMessage(msg,value){
         switch(msg){
@@ -23,9 +24,13 @@ class InformationLayer extends Layer{
                 this.utilButtonClicked(msg,value);
                 
             break;
-            case '':
-
-                
+            case 'closeWindow':
+                this.activeWindow.dispose();
+                this.activeWindow= null;
+            break;
+            case 'getBudgetInformation':   
+                let b = this.grid.game.getProcess('FundsProcess').getBudgetInformation();
+                value.sendMessage('receiveBudgetInformation',b);
             break;
         }
     }
@@ -33,18 +38,17 @@ class InformationLayer extends Layer{
     utilButtonClicked(msg,value){
         switch(value){
             case "budget":
-                this.activeWindow = !this.activeWindow;
-                if(this.activeWindow == true){
-                    this.context.clearRect(0,0,1024,768);
+                if(this.activeWindow!=null){
+                    this.activeWindow.dispose();
+                    this.activeWindow = null;
                 }else{
-                    let window = new BudgetWindow();
-                    window.draw(this.context);
-                    console.log("show budget infromation panel");    
+                    this.activeWindow = new BudgetWindow(this.context);
+                    this.activeWindow.addListener(this);
+                    this.activeWindow.draw();
                 }
-                
             break;
             case "TileInfo":
-                console.log('show til information window');
+                
             break;
         }
     }

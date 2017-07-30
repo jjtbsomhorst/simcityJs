@@ -21,6 +21,11 @@ class FundsProcess extends BaseProcess{
 
     }
 
+    getBudgetInformation(){
+        return this.funds;
+    }
+
+
     getTaxes(){
         return this.taxes;
     }
@@ -91,8 +96,8 @@ class FundsProcess extends BaseProcess{
                                     currentValue = this.funds.get("Power");
                                     this.funds.set("Power",currentValue-=10);
                                 }else if(zone instanceof Road){
-                                    let currentValue = this.funds.get("Road");
-                                    this.funds.set("Power",currentValue-=25);
+                                    currentValue = this.funds.get("Road");
+                                    this.funds.set("Road",currentValue-=10);
                                 }
 
                             });

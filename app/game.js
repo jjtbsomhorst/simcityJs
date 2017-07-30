@@ -38,10 +38,15 @@ class game{
 		}
 	}
 
+	getProcess(n){
+		return this.processes.get(n);
+	}
+
+
 	initProcesss(){
-		this.processes = [];
-		this.processes.push(new FundsProcess(this));
-		this.processes.push(new InhabitantProcess(this));
+		this.processes = new Map();
+		this.processes.set('FundsProcess',new FundsProcess(this));
+		this.processes.set('InhabitantProcess',new InhabitantProcess(this));
 		this.startProcesses();
 	}
 
@@ -80,5 +85,5 @@ class game{
 	}
 		
 }
-window.g = new game("canvas");
+
 

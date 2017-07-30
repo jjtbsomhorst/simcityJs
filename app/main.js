@@ -1,4 +1,5 @@
 var p = {
+        palette: "util/palette",
         MenuBar: 'toolbars/menubar',
         Toolbar: 'toolbars/Toolbar',
         Utilbar: 'toolbars/UtilBar',
@@ -37,6 +38,12 @@ var p = {
         Inhabitant: "entities/inhabitant",
         PathFinding: "processes/PathFinding",
         Point: "Point",
+        
+        uiElement: "ui/UIElement",
+        textLabel: "ui/Label",
+        button: "ui/Button",
+        textInput: "ui/TextInput",
+        numberInput: "ui/NumberInput",
         BasicWindow: 'ui/BasicWindow',
         BudgetWindow: 'ui/BudgetWindow',
         ZoneInfoWindow: 'ui/ZoneInfoWindow',
@@ -54,5 +61,5 @@ requirejs.config({
 
 
 require(objects,function(){
-    
+    window.g = new game("canvas");
 });
