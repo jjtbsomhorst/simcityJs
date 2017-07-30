@@ -29,8 +29,12 @@ class InformationLayer extends Layer{
                 this.activeWindow= null;
             break;
             case 'getBudgetInformation':   
-                let b = this.grid.game.getProcess('FundsProcess').getBudgetInformation();
-                value.sendMessage('receiveBudgetInformation',b);
+                var process = this.grid.game.getProcess('FundsProcess').getInformation();
+                value.sendMessage('receiveBudgetInformation',process);
+            break;
+            case 'getInhabitantInformation':
+                var process = this.grid.game.getProcess('InhabitantProcess').getInformation();
+                value.sendMessage('receiveInhabitantInfo',process);
             break;
         }
     }
@@ -48,7 +52,17 @@ class InformationLayer extends Layer{
                 }
             break;
             case "TileInfo":
-                
+            break;
+            case 'Population':
+               if(this.activeWindow!=null){
+                    this.activeWindow.dispose();
+                    this.activeWindow = null;
+                }else{
+                    this.activeWindow = new InformationWindow(this.context);
+                    this.activeWindow.addListener(this);
+                    this.activeWindow.draw();
+                } 
+
             break;
         }
     }

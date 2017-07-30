@@ -16,10 +16,11 @@ class InhabitantBar extends MenuBar{
     }
 
     sendMessage(type,value){
-        if(type === "newcitizen"){
-            this.menubarNode.innerHTML = "<b>P:&nbsp</b>"+value;
-        }
-        
+        switch(type){
+            case 'newcitizen':
+                this.menubarNode.innerHTML = "<b>P:&nbsp</b>"+value;
+            break;
+        }        
     }
 
 }

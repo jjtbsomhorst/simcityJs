@@ -147,6 +147,15 @@ class InhabitantProcess extends BaseProcess{
         return zone;
     }
 
+    getInformation(){
+        let info = new Map();
+        info.set('population',this.inhabitants.length);
+        info.set('homeless',this.homeless.length);
+        info.set('workless',this.workless.length);
+        info.set('employees',this.employees.length);
+        return info;
+    }
+
 
     sendMessage(type,value){
         switch(type){

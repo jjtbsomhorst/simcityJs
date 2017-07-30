@@ -13,6 +13,7 @@ class UtilToolbar extends Toolbar{
 		let imgutils = "assets/util_buttons.png";
 		this.generateButton('budget',imgutils,"0px","0px",this.menubarNode);
 		this.generateButton('TileInfo',imgutils,"-16px","0px",this.menubarNode);
+		this.generateButton('Population',imgutils,"-16px","0px",this.menubarNode);
 
 		
 		this.menubarNode.style.width = (this.buttons*16)+"px";

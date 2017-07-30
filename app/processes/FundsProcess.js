@@ -21,7 +21,7 @@ class FundsProcess extends BaseProcess{
 
     }
 
-    getBudgetInformation(){
+    getInformation(){
         return this.funds;
     }
 
@@ -89,6 +89,19 @@ class FundsProcess extends BaseProcess{
                                     let taxRate = this.taxes.get("Residential");
                                     currentValue += ((baseValue / 100 ) * taxRate);
                                     this.funds.set("Residential",currentValue);
+                                }else if(zone instanceof Commercial){
+                                    let baseValue = 100*zone.getEmployeeCount();
+                                    currentValue = this.funds.get("Commercial");
+                                    let taxRate = this.taxes.get("Commercial");
+                                    currentValue += ((baseValue / 100 ) * taxRate);
+                                    this.funds.set("Commercial",currentValue);
+                                }else if(zone instanceof Industrial){
+                                    let baseValue = 100*zone.getEmployeeCount();
+                                    currentValue = this.funds.get("Industrial");
+                                    let taxRate = this.taxes.get("Industrial");
+                                    currentValue += ((baseValue / 100 ) * taxRate);
+                                    this.funds.set("Industrial",currentValue);
+                                
                                 }else if(zone instanceof PowerPlant){
                                     currentValue = this.funds.get("Power");
                                     this.funds.set("Power",currentValue-=500); //  powerplants costs money!!

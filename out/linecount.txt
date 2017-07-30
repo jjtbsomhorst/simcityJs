@@ -1,0 +1,96 @@
+===============================================================================
+EXTENSION NAME : linecount
+EXTENSION VERSION : 0.1.7
+-------------------------------------------------------------------------------
+count time : 2017-07-30 20:35:53
+count workspace : c:\Users\jjtbsomhorst\Documents\Workspaces\simcityJs
+total files : 84
+total code lines : 2213
+total comment lines : 82
+total blank lines : 599
+
+.project, code is 11, comment is 0, blank is 0.
+app\BetterSet.js, code is 51, comment is 0, blank is 11.
+app\entities\inhabitant.js, code is 16, comment is 0, blank is 7.
+app\Game.js, code is 69, comment is 0, blank is 20.
+app\Grid.js, code is 138, comment is 4, blank is 40.
+app\layers\EffectsLayer.js, code is 59, comment is 0, blank is 14.
+app\layers\InformationLayer.js, code is 44, comment is 0, blank is 13.
+app\layers\Layer.js, code is 88, comment is 5, blank is 33.
+app\layers\Powergrid.js, code is 60, comment is 0, blank is 15.
+app\layers\RoadGrid.js, code is 18, comment is 0, blank is 7.
+app\layers\StaticLayer.js, code is 26, comment is 0, blank is 10.
+app\layers\TileLayer.js, code is 38, comment is 0, blank is 11.
+app\layers\TrafficLayer.js, code is 6, comment is 0, blank is 2.
+app\layers\ZonesLayer.js, code is 16, comment is 0, blank is 9.
+app\main.js, code is 59, comment is 0, blank is 6.
+app\minified.js, code is 27, comment is 41, blank is 0.
+app\MouseHandler.js, code is 34, comment is 1, blank is 13.
+app\Point.js, code is 54, comment is 1, blank is 12.
+app\processes\BaseProcess.js, code is 14, comment is 4, blank is 7.
+app\processes\FundsProcess.js, code is 93, comment is 5, blank is 22.
+app\processes\InhabitantProcess.js, code is 157, comment is 4, blank is 47.
+app\processes\PathFinding.js, code is 81, comment is 2, blank is 16.
+app\require.js, code is 1, comment is 4, blank is 0.
+app\toolbars\FundsBar.js, code is 22, comment is 0, blank is 8.
+app\toolbars\InhabitantsBar.js, code is 17, comment is 0, blank is 8.
+app\toolbars\menubar.js, code is 40, comment is 0, blank is 12.
+app\toolbars\Toolbar.js, code is 22, comment is 0, blank is 5.
+app\toolbars\UtilBar.js, code is 18, comment is 0, blank is 9.
+app\toolbars\ZoneToolbar.js, code is 28, comment is 0, blank is 6.
+app\ui\BasicWindow.js, code is 40, comment is 0, blank is 12.
+app\ui\BudgetWindow.js, code is 63, comment is 0, blank is 16.
+app\ui\Button.js, code is 26, comment is 0, blank is 4.
+app\ui\Label.js, code is 31, comment is 0, blank is 8.
+app\ui\NumberInput.js, code is 44, comment is 0, blank is 13.
+app\ui\TextInput.js, code is 68, comment is 0, blank is 16.
+app\ui\UIElement.js, code is 118, comment is 0, blank is 40.
+app\ui\ZoneInfoWindow.js, code is 8, comment is 0, blank is 6.
+app\util\palette.js, code is 16, comment is 0, blank is 2.
+app\util\ZoneLoader.js, code is 61, comment is 0, blank is 11.
+app\zones\CommercialZone.js, code is 36, comment is 0, blank is 10.
+app\zones\DemandingZone.js, code is 22, comment is 0, blank is 7.
+app\zones\Industrial.js, code is 36, comment is 0, blank is 13.
+app\zones\PowerLine.js, code is 73, comment is 1, blank is 13.
+app\zones\PowerPlant.js, code is 13, comment is 0, blank is 2.
+app\zones\Residential.js, code is 41, comment is 0, blank is 11.
+app\zones\Road.js, code is 71, comment is 1, blank is 18.
+app\zones\Soil.js, code is 6, comment is 0, blank is 2.
+app\zones\Sprite.js, code is 18, comment is 0, blank is 4.
+app\zones\Tile.js, code is 7, comment is 0, blank is 2.
+app\zones\TrafficZone.js, code is 7, comment is 0, blank is 3.
+app\zones\Zone.js, code is 32, comment is 0, blank is 15.
+assets\blank.png, it is a binary file.
+assets\car.png, it is a binary file.
+assets\commercial.pdn, code is 10, comment is 0, blank is 0.
+assets\commercial.png, it is a binary file.
+assets\Dollar.png, it is a binary file.
+assets\effects.png, it is a binary file.
+assets\electra.gif, it is a binary file.
+assets\electra.png, it is a binary file.
+assets\home_1.png, it is a binary file.
+assets\home_2.png, it is a binary file.
+assets\industrial.pdn, it is a binary file.
+assets\industrial.png, it is a binary file.
+assets\path.png, it is a binary file.
+assets\powerlines.pdn, code is 9, comment is 0, blank is 0.
+assets\powerlines.png, it is a binary file.
+assets\powerplant.png, it is a binary file.
+assets\residential.pdn, code is 9, comment is 9, blank is 0.
+assets\residential.png, it is a binary file.
+assets\road.png, it is a binary file.
+assets\road_normal.png, it is a binary file.
+assets\road_round.png, it is a binary file.
+assets\road_stop.png, it is a binary file.
+assets\soil (copy).png, it is a binary file.
+assets\soil.png, it is a binary file.
+assets\util_buttons.pdn, code is 7, comment is 0, blank is 0.
+assets\util_buttons.png, it is a binary file.
+assets\util_zone_buttons.png, it is a binary file.
+assets\water.gif, it is a binary file.
+assets\water.png, it is a binary file.
+assets\zone_buttons.pdn, code is 11, comment is 0, blank is 0.
+assets\zone_buttons.png, it is a binary file.
+index.html, code is 19, comment is 0, blank is 6.
+README.md, code is 4, comment is 0, blank is 2.
+===============================================================================

@@ -46,6 +46,7 @@ var p = {
         numberInput: "ui/NumberInput",
         BasicWindow: 'ui/BasicWindow',
         BudgetWindow: 'ui/BudgetWindow',
+        InfoWindow: 'ui/InfoWindow',
         ZoneInfoWindow: 'ui/ZoneInfoWindow',
     };
 
